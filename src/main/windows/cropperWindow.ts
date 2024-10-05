@@ -1,5 +1,5 @@
 import { BrowserWindow } from "electron";
-import { isDevelopment, pageRoot, preload } from "./static";
+import { isDevelopment, pageRoot, preload } from "../static";
 
 export const createWindow = (display: Electron.Display) => {
   const win = new BrowserWindow({

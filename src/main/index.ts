@@ -10,8 +10,9 @@ import {
 } from "electron";
 import log from "electron-log";
 import { checkUpdate } from "./autoupdater";
-import { createWindow as createStreamWindow } from "./streamWindow";
-import { createWindow as createCropperWindow } from "./cropperWindow";
+import { createWindow as createStreamWindow } from "./windows/streamWindow";
+import { createWindow as createCropperWindow } from "./windows/cropperWindow";
+import { createWindow as createFrameWindow } from "./windows/frameWindow";
 
 const isDevelopment = process.env.NODE_ENV === "development";
 
@@ -25,6 +26,7 @@ if (!app.requestSingleInstanceLock()) {
 
 let streamWindow: BrowserWindow | null;
 let cropperWindow: BrowserWindow | null;
+let frameWindow: BrowserWindow | null;
 
 protocol.registerSchemesAsPrivileged([
   { scheme: "app", privileges: { secure: true, standard: true } },
@@ -42,18 +44,32 @@ function initEvents() {
         app.quit();
         break;
       case "cropper:capture":
+        const {
+          displayId,
+          bounds,
+        }: {
+          displayId: number;
+          bounds: { x: number; y: number; width: number; height: number };
+        } = payload;
+        console.log("cropper:capture", payload);
         const allDisplays = screen.getAllDisplays();
         const targetDisplay = allDisplays.find(
-          (display) => display.id === Number(payload.displayId)
+          (display) => display.id === Number(displayId)
         );
         cropperWindow?.hide();
         if (targetDisplay) {
-          createStreamWindow({
+          frameWindow = createFrameWindow(bounds);
+          streamWindow = createStreamWindow({
             ...payload,
             size: {
               width: targetDisplay.bounds.width * targetDisplay.scaleFactor,
               height: targetDisplay.bounds.height * targetDisplay.scaleFactor,
             },
+          });
+          streamWindow.on("closed", () => {
+            frameWindow?.close();
+            streamWindow = null;
+            frameWindow = null;
           });
         }
         break;

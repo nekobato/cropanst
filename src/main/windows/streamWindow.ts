@@ -1,5 +1,5 @@
 import { app, BrowserWindow } from "electron";
-import { isDevelopment, pageRoot, preload } from "./static";
+import { isDevelopment, pageRoot, preload } from "../static";
 
 export const createWindow = (data: {
   displayId: number;
@@ -15,16 +15,20 @@ export const createWindow = (data: {
   };
 }) => {
   const win = new BrowserWindow({
-    width: data.bounds.width,
-    height: data.bounds.height,
-    title: "Crop and Stream",
+    title: "Crop & Stream",
     webPreferences: {
       preload: preload,
     },
     show: false,
     fullscreenable: false,
-    center: true,
+    resizable: false,
+    frame: true,
+    hasShadow: true,
+    skipTaskbar: false,
   });
+
+  win.setContentSize(data.bounds.width, data.bounds.height);
+  win.center();
 
   if (isDevelopment) {
     win.loadURL(pageRoot + "#/stream");
@@ -34,7 +38,8 @@ export const createWindow = (data: {
   }
 
   win.webContents.on("did-finish-load", () => {
-    win.show();
+    win.showInactive();
+    win.hide();
     app.dock.show();
     win.webContents.send("cropper:capture", data);
   });
