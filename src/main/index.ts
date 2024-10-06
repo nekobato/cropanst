@@ -9,6 +9,10 @@ import {
   desktopCapturer,
 } from "electron";
 import log from "electron-log";
+import {
+  hasScreenCapturePermission,
+  hasPromptedForPermission,
+} from "mac-screen-capture-permissions";
 import { checkUpdate } from "./autoupdater";
 import { createWindow as createStreamWindow } from "./windows/streamWindow";
 import { createWindow as createCropperWindow } from "./windows/cropperWindow";
@@ -22,6 +26,20 @@ if (process.platform === "win32") app.setAppUserModelId(app.getName());
 if (!app.requestSingleInstanceLock()) {
   app.quit();
   process.exit(0);
+}
+
+if (process.platform === "darwin") {
+  const hadAskForPermission = hasPromptedForPermission();
+  const hasPermission = hasScreenCapturePermission();
+  if (!hasPermission && !hadAskForPermission) {
+    app.quit();
+    process.exit(0);
+  }
+
+  if (!hasPermission) {
+    app.quit();
+    process.exit(0);
+  }
 }
 
 let cropperWindows: BrowserWindow[] = [];
@@ -55,6 +73,7 @@ function initEvents() {
         const targetDisplay = allDisplays.find(
           (display) => display.id === Number(displayId)
         );
+        console.log("targetDisplay", targetDisplay?.bounds);
         setDisplayMediaRequestHandler(displayId);
         cropperWindows.forEach((cropperWindow) => {
           cropperWindow.close();
@@ -62,7 +81,12 @@ function initEvents() {
         cropperWindows = [];
 
         if (targetDisplay) {
-          frameWindow = createFrameWindow(bounds);
+          frameWindow = createFrameWindow({
+            x: bounds.x + targetDisplay.bounds.x,
+            y: bounds.y + targetDisplay.bounds.y,
+            width: bounds.width,
+            height: bounds.height,
+          });
           streamWindow = createStreamWindow({
             ...payload,
             size: {

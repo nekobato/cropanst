@@ -84,7 +84,7 @@ window.ipc.on("cropper:capture", (_, data) => {
 .canvas {
   width: 100%;
   height: 100%;
-  /* cursor: none; */
-  -webkit-drag-region: no-drag;
+  cursor: move;
+  -webkit-app-region: drag;
 }
 </style>

@@ -34,6 +34,8 @@ export const createWindow = (bounds: Rectangle) => {
     win.loadFile(pageRoot, { hash: `/frame` });
   }
 
+  console.log("frameWindow", bounds);
+
   win.setBounds({
     // window border 1pxとframe border 1pxがあるので2pxずらす
     x: bounds.x - 2,

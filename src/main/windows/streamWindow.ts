@@ -25,6 +25,9 @@ export const createWindow = (data: {
     frame: true,
     hasShadow: true,
     skipTaskbar: false,
+    titleBarStyle: "hidden",
+    titleBarOverlay: true,
+    trafficLightPosition: { x: 12, y: 12 },
   });
 
   win.setContentSize(data.bounds.width, data.bounds.height);
