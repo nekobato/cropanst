@@ -29,6 +29,5 @@ dist-ssr
 /release
 
 .env
-docs/
 
 electron-builder.env

@@ -18,12 +18,12 @@ export const createWindow = (display: Electron.Display) => {
     },
   });
 
-  // win.setAlwaysOnTop(true, "screen-saver");
+  win.setAlwaysOnTop(true, "screen-saver");
   win.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
 
-  // win.on("blur", () => {
-  //   win.setAlwaysOnTop(true, "screen-saver");
-  // });
+  win.on("blur", () => {
+    win.setAlwaysOnTop(true, "screen-saver");
+  });
 
   if (isDevelopment) {
     win.loadURL(pageRoot + `#/cropper/${display.id}`);

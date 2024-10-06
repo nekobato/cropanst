@@ -24,9 +24,9 @@ if (!app.requestSingleInstanceLock()) {
   process.exit(0);
 }
 
-let streamWindow: BrowserWindow | null;
-let cropperWindow: BrowserWindow | null;
+let cropperWindows: BrowserWindow[] = [];
 let frameWindow: BrowserWindow | null;
+let streamWindow: BrowserWindow | null;
 
 protocol.registerSchemesAsPrivileged([
   { scheme: "app", privileges: { secure: true, standard: true } },
@@ -51,12 +51,16 @@ function initEvents() {
           displayId: number;
           bounds: { x: number; y: number; width: number; height: number };
         } = payload;
-        console.log("cropper:capture", payload);
         const allDisplays = screen.getAllDisplays();
         const targetDisplay = allDisplays.find(
           (display) => display.id === Number(displayId)
         );
-        cropperWindow?.hide();
+        setDisplayMediaRequestHandler(displayId);
+        cropperWindows.forEach((cropperWindow) => {
+          cropperWindow.close();
+        });
+        cropperWindows = [];
+
         if (targetDisplay) {
           frameWindow = createFrameWindow(bounds);
           streamWindow = createStreamWindow({
@@ -81,32 +85,29 @@ function initEvents() {
 }
 
 function createCropperWindowsOnAllDisplays() {
-  // screen.getAllDisplays().forEach((display) => {
-  //   createCropperWindow(display);
-  // });
-  const display = screen.getPrimaryDisplay();
-  cropperWindow = createCropperWindow(display);
+  screen.getAllDisplays().forEach((display) => {
+    cropperWindows.push(createCropperWindow(display));
+  });
+}
+
+function setDisplayMediaRequestHandler(displayId: number) {
+  session.defaultSession.setDisplayMediaRequestHandler((request, callback) => {
+    desktopCapturer.getSources({ types: ["screen"] }).then((sources) => {
+      const source = sources.find(
+        (soure) => soure.display_id === displayId.toString()
+      );
+      callback({ video: source, audio: "loopback" });
+    });
+  });
 }
 
 app.on("window-all-closed", () => {
   app.quit();
 });
 
-app.on("activate", () => {
-  if (!streamWindow && !cropperWindow) {
-    createCropperWindowsOnAllDisplays();
-  }
-});
-
 app.on("ready", async () => {
   initEvents();
   createCropperWindowsOnAllDisplays();
-
-  session.defaultSession.setDisplayMediaRequestHandler((request, callback) => {
-    desktopCapturer.getSources({ types: ["screen"] }).then((sources) => {
-      callback({ video: sources[0], audio: "loopback" });
-    });
-  });
 });
 
 if (isDevelopment) {

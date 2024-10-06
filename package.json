@@ -44,5 +44,7 @@
     "vue-router": "^4.4.3",
     "vue-tsc": "^2.0.29"
   },
-  "dependencies": {}
+  "dependencies": {
+    "mac-screen-capture-permissions": "^2.1.0"
+  }
 }
