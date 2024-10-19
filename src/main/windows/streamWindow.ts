@@ -41,8 +41,10 @@ export const createWindow = (data: {
   }
 
   win.webContents.on("did-finish-load", () => {
-    win.showInactive();
-    app.dock.show();
+    win.show();
+    if (app.dock) {
+      app.dock.show();
+    }
     win.webContents.send("cropper:capture", data);
   });
 

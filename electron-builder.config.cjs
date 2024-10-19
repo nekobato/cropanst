@@ -1,4 +1,5 @@
 require("dotenv").config();
+const { Platform } = require("electron-builder");
 const pkg = require("./package.json");
 const productName = "Crop and Stream";
 
@@ -9,6 +10,7 @@ const config = {
   directories: {
     output: `release/${pkg.version}`,
   },
+  Platform: [Platform.MAC, Platform.WINDOWS],
   files: ["out"],
   mac: {
     target: ["default"],
