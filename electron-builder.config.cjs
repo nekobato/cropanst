@@ -24,7 +24,7 @@ const config = {
   win: {
     target: [
       {
-        target: "nsis",
+        target: "portable",
         arch: ["x64"],
       },
     ],
