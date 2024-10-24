@@ -50,10 +50,25 @@ const onMouseMove = (event: MouseEvent) => {
 };
 
 const onMouseUp = () => {
+  if (!overlay.value) {
+    return;
+  }
+  const bounds = {
+    x:
+      overlay.value?.width > 0
+        ? overlay.value.x
+        : overlay.value.x + overlay.value.width,
+    y:
+      overlay.value?.height > 0
+        ? overlay.value.y
+        : overlay.value.y + overlay.value.height,
+    width: Math.abs(overlay.value.width),
+    height: Math.abs(overlay.value.height),
+  };
   if (overlay.value) {
     window.ipc.send("cropper:capture", {
       displayId: route.params.displayId,
-      bounds: toRaw(overlay.value),
+      bounds: bounds,
     });
     overlay.value = null;
   }
