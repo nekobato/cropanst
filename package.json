@@ -30,7 +30,7 @@
     "@vitejs/plugin-vue": "^5.1.2",
     "dotenv": "^16.4.5",
     "electron": "32.0.0",
-    "electron-builder": "^24.13.3",
+    "electron-builder": "^25.1.8",
     "electron-icon-builder": "^2.0.1",
     "electron-log": "^5.1.7",
     "electron-updater": "^6.2.1",
