@@ -69,11 +69,11 @@ function initEvents() {
           displayId: number;
           bounds: { x: number; y: number; width: number; height: number };
         } = payload;
+
         const allDisplays = screen.getAllDisplays();
         const targetDisplay = allDisplays.find(
           (display) => display.id === Number(displayId)
         );
-        console.log("targetDisplay", targetDisplay?.bounds);
         setDisplayMediaRequestHandler(displayId);
         cropperWindows.forEach((cropperWindow) => {
           cropperWindow.close();
@@ -95,6 +95,7 @@ function initEvents() {
             },
           });
           streamWindow.on("closed", () => {
+            streamWindow?.removeAllListeners();
             frameWindow?.close();
             streamWindow = null;
             frameWindow = null;

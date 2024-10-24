@@ -22,12 +22,9 @@ export const createWindow = (data: {
     show: false,
     fullscreenable: false,
     resizable: false,
-    frame: true,
+    frame: false,
     hasShadow: true,
     skipTaskbar: false,
-    titleBarStyle: "hidden",
-    titleBarOverlay: true,
-    trafficLightPosition: { x: 12, y: 12 },
   });
 
   win.setContentSize(data.bounds.width, data.bounds.height);
@@ -42,10 +39,15 @@ export const createWindow = (data: {
 
   win.webContents.on("did-finish-load", () => {
     win.show();
-    if (app.dock) {
-      app.dock.show();
-    }
     win.webContents.send("cropper:capture", data);
+  });
+
+  win.on("focus", () => {
+    win.webContents.send("focus");
+  });
+
+  win.on("blur", () => {
+    win.webContents.send("blur");
   });
 
   return win;

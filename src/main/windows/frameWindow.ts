@@ -13,6 +13,7 @@ export const createWindow = (bounds: Rectangle) => {
     transparent: true,
     roundedCorners: false,
     hasShadow: false,
+    skipTaskbar: true,
     webPreferences: {
       preload,
       devTools: isDevelopment,

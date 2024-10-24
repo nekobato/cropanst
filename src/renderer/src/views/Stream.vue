@@ -1,5 +1,8 @@
 <script lang="ts" setup>
 import { ref } from "vue";
+import { Icon } from "@iconify/vue";
+
+const isFocused = ref(false);
 
 const video = ref<HTMLVideoElement | null>(null);
 const canvas = ref<HTMLCanvasElement | null>(null);
@@ -33,6 +36,10 @@ function drawImage() {
   }
 }
 
+function closeWindow() {
+  window.ipc.send("exit");
+}
+
 window.ipc.on("cropper:capture", (_, data) => {
   console.log(data);
   displaySize.value = data.size;
@@ -59,6 +66,14 @@ window.ipc.on("cropper:capture", (_, data) => {
     })
     .catch((e) => console.log(e));
 });
+
+window.ipc.on("focus", () => {
+  isFocused.value = true;
+});
+
+window.ipc.on("blur", () => {
+  isFocused.value = false;
+});
 </script>
 <template>
   <video
@@ -74,7 +89,15 @@ window.ipc.on("cropper:capture", (_, data) => {
     class="canvas"
     :width="videoBounds.width"
     :height="videoBounds.height"
+    @click="() => console.log('click')"
   ></canvas>
+  <button
+    @click="closeWindow"
+    class="close-button"
+    :class="{ 'is-focused': isFocused }"
+  >
+    <Icon class="icon" icon="mingcute:close-fill" />
+  </button>
 </template>
 
 <style lang="scss" scoped>
@@ -86,5 +109,28 @@ window.ipc.on("cropper:capture", (_, data) => {
   height: 100%;
   cursor: move;
   -webkit-app-region: drag;
+}
+
+.close-button {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 24px;
+  height: 24px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  visibility: hidden;
+  -webkit-app-region: no-drag;
+  cursor: pointer;
+  border-radius: 4px;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+
+  &.is-focused {
+    visibility: visible;
+  }
 }
 </style>

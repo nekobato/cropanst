@@ -11,7 +11,7 @@ export const checkUpdate = () => {
         buttons: ["いいよ", "ダメ"],
         title: "アップデートがあります",
         message: "アップデートがあります",
-        detail: "アプリケーションを再起動して\nアップデートしてね",
+        detail: "アプリケーションを再起動して\nアップデートしていってね",
       })
       .then((result) => {
         if (result.response === 0) {
