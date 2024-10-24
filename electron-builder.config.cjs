@@ -28,6 +28,7 @@ const config = {
         arch: ["x64"],
       },
     ],
+    icon: "out/renderer/icons/win/icon.ico",
     publish: ["github"],
   },
   nsis: {
