@@ -14,6 +14,7 @@ export const createWindow = (bounds: Rectangle) => {
     roundedCorners: false,
     hasShadow: false,
     skipTaskbar: true,
+    show: false,
     webPreferences: {
       preload,
       devTools: isDevelopment,
@@ -34,8 +35,6 @@ export const createWindow = (bounds: Rectangle) => {
   } else {
     win.loadFile(pageRoot, { hash: `/frame` });
   }
-
-  console.log("frameWindow", bounds);
 
   win.setBounds({
     // window border 1pxとframe border 1pxがあるので2pxずらす

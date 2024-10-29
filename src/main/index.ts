@@ -80,7 +80,6 @@ function initEvents() {
         });
         cropperWindows = [];
 
-        console.log("targetDisplay", targetDisplay);
         if (targetDisplay) {
           frameWindow = createFrameWindow({
             x: bounds.x + targetDisplay.bounds.x,

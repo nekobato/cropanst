@@ -1,4 +1,4 @@
-import { BrowserWindow } from "electron";
+import { BrowserWindow, dialog } from "electron";
 import { isDevelopment, pageRoot, preload } from "../static";
 
 export const createWindow = (display: Electron.Display) => {
@@ -13,6 +13,7 @@ export const createWindow = (display: Electron.Display) => {
     transparent: true,
     roundedCorners: false,
     hasShadow: false,
+    show: false,
     webPreferences: {
       preload,
     },
@@ -32,7 +33,12 @@ export const createWindow = (display: Electron.Display) => {
     win.loadFile(pageRoot, { hash: `/cropper/${display.id}` });
   }
 
-  win.setBounds(display.bounds);
+  win.setBounds({
+    x: display.bounds.x,
+    y: display.bounds.y,
+    width: display.bounds.width * display.scaleFactor,
+    height: display.bounds.height * display.scaleFactor,
+  });
 
   win.webContents.on("did-finish-load", () => {
     win.show();

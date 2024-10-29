@@ -24,7 +24,6 @@ export const createWindow = (data: {
     resizable: false,
     frame: false,
     hasShadow: true,
-    skipTaskbar: false,
   });
 
   win.setContentSize(data.bounds.width, data.bounds.height);
@@ -39,6 +38,9 @@ export const createWindow = (data: {
 
   win.webContents.on("did-finish-load", () => {
     win.show();
+    if (app.dock) {
+      app.dock.show();
+    }
     win.webContents.send("cropper:capture", data);
   });
 
