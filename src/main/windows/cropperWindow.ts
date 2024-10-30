@@ -1,4 +1,4 @@
-import { BrowserWindow, dialog } from "electron";
+import { BrowserWindow } from "electron";
 import { isDevelopment, pageRoot, preload } from "../static";
 
 export const createWindow = (display: Electron.Display) => {

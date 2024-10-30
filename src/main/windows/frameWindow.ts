@@ -25,9 +25,9 @@ export const createWindow = (bounds: Rectangle) => {
   win.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
   win.setIgnoreMouseEvents(true);
 
-  // win.on("blur", () => {
-  //   win.setAlwaysOnTop(true, "screen-saver");
-  // });
+  win.on("blur", () => {
+    win.setAlwaysOnTop(true, "screen-saver");
+  });
 
   if (isDevelopment) {
     win.loadURL(pageRoot + `#/frame`);
