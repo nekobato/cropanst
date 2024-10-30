@@ -42,6 +42,9 @@ if (process.platform === "darwin") {
   }
 }
 
+// https://www.electronjs.org/ja/docs/latest/tutorial/performance#8-%E3%83%87%E3%83%95%E3%82%A9%E3%83%AB%E3%83%88%E3%81%AE%E3%83%A1%E3%83%8B%E3%83%A5%E3%83%BC%E3%81%8C%E4%B8%8D%E8%A6%81%E3%81%AA%E3%82%89-menusetapplicationmenunull-%E3%82%92%E5%91%BC%E3%81%B3%E5%87%BA%E3%81%99
+Menu.setApplicationMenu(null);
+
 let cropperWindows: BrowserWindow[] = [];
 let frameWindow: BrowserWindow | null;
 let streamWindow: BrowserWindow | null;
@@ -52,8 +55,7 @@ protocol.registerSchemesAsPrivileged([
 
 checkUpdate();
 
-const menu = Menu.buildFromTemplate([{ role: "appMenu" }]);
-Menu.setApplicationMenu(menu);
+Menu.setApplicationMenu(null);
 
 function initEvents() {
   ipcMain.on("renderer-event", (_, event: string, payload: any) => {
@@ -99,6 +101,7 @@ function initEvents() {
             frameWindow?.close();
             streamWindow = null;
             frameWindow = null;
+            app.quit();
           });
         }
         break;
