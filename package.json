@@ -44,7 +44,7 @@
     "vite-plugin-electron-renderer": "^0.14.5",
     "vue": "^3.4.38",
     "vue-router": "^4.4.3",
-    "vue-tsc": "^2.0.29"
+    "vue-tsc": "^2.1.10"
   },
   "dependencies": {
     "mac-screen-capture-permissions": "^2.1.0"
