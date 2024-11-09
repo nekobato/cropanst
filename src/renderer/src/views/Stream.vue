@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { ref } from "vue";
 import { Icon } from "@iconify/vue";
+import { log } from "electron-log";
 
 const isFocused = ref(false);
 
@@ -41,7 +42,6 @@ function closeWindow() {
 }
 
 window.ipc.on("cropper:capture", (_, data) => {
-  console.log(data);
   displaySize.value = data.size;
   videoBounds.value = data.bounds;
   navigator.mediaDevices
@@ -61,10 +61,9 @@ window.ipc.on("cropper:capture", (_, data) => {
           video.value?.play();
           setInterval(() => drawImage(), 1000 / 30);
         };
-        console.log("start");
       }
     })
-    .catch((e) => console.log(e));
+    .catch((e) => log(e));
 });
 
 window.ipc.on("focus", () => {
@@ -89,7 +88,6 @@ window.ipc.on("blur", () => {
     class="canvas"
     :width="videoBounds.width"
     :height="videoBounds.height"
-    @click="() => console.log('click')"
   ></canvas>
   <button
     @click="closeWindow"

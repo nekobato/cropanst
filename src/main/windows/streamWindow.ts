@@ -1,5 +1,6 @@
 import { app, BrowserWindow } from "electron";
-import { isDevelopment, pageRoot, preload } from "../static";
+import path from "node:path";
+import { isDevelopment, pageRoot, preload, rendererRoot } from "../static";
 
 export const createWindow = (data: {
   displayId: number;
@@ -24,6 +25,8 @@ export const createWindow = (data: {
     resizable: false,
     frame: false,
     hasShadow: true,
+    focusable: true,
+    icon: path.join(rendererRoot, "./public/icon.png"),
   });
 
   win.setContentSize(data.bounds.width, data.bounds.height);
@@ -42,6 +45,7 @@ export const createWindow = (data: {
       app.dock.show();
     }
     win.webContents.send("cropper:capture", data);
+    win.focus();
   });
 
   win.on("focus", () => {
@@ -50,6 +54,10 @@ export const createWindow = (data: {
 
   win.on("blur", () => {
     win.webContents.send("blur");
+  });
+
+  win.on("closed", () => {
+    app.quit();
   });
 
   return win;

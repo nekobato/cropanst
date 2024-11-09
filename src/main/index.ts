@@ -3,7 +3,6 @@ import {
   Menu,
   app,
   ipcMain,
-  protocol,
   screen,
   session,
   desktopCapturer,
@@ -17,8 +16,7 @@ import { checkUpdate } from "./autoupdater";
 import { createWindow as createStreamWindow } from "./windows/streamWindow";
 import { createWindow as createCropperWindow } from "./windows/cropperWindow";
 import { createWindow as createFrameWindow } from "./windows/frameWindow";
-
-const isDevelopment = process.env.NODE_ENV === "development";
+import { isDevelopment } from "./static";
 
 // Set application name for Windows 10+ notifications
 if (process.platform === "win32") app.setAppUserModelId(app.getName());
@@ -49,13 +47,19 @@ let cropperWindows: BrowserWindow[] = [];
 let frameWindow: BrowserWindow | null;
 let streamWindow: BrowserWindow | null;
 
-protocol.registerSchemesAsPrivileged([
-  { scheme: "app", privileges: { secure: true, standard: true } },
-]);
-
 checkUpdate();
 
-Menu.setApplicationMenu(null);
+function initMenu() {
+  const template: Electron.MenuItemConstructorOptions[] = [
+    {
+      label: "Application",
+      role: "appMenu",
+    },
+  ];
+
+  const menu = Menu.buildFromTemplate(template);
+  Menu.setApplicationMenu(menu);
+}
 
 function initEvents() {
   ipcMain.on("renderer-event", (_, event: string, payload: any) => {
@@ -72,15 +76,12 @@ function initEvents() {
           bounds: { x: number; y: number; width: number; height: number };
         } = payload;
 
-        const allDisplays = screen.getAllDisplays();
-        const targetDisplay = allDisplays.find(
-          (display) => display.id === Number(displayId)
-        );
+        const targetDisplay = screen
+          .getAllDisplays()
+          .find((display) => display.id === Number(displayId));
+
         setDisplayMediaRequestHandler(displayId);
-        cropperWindows.forEach((cropperWindow) => {
-          cropperWindow.close();
-        });
-        cropperWindows = [];
+        removeCropperWindows();
 
         if (targetDisplay) {
           frameWindow = createFrameWindow({
@@ -96,13 +97,6 @@ function initEvents() {
               height: targetDisplay.bounds.height * targetDisplay.scaleFactor,
             },
           });
-          streamWindow.on("closed", () => {
-            streamWindow?.removeAllListeners();
-            frameWindow?.close();
-            streamWindow = null;
-            frameWindow = null;
-            app.quit();
-          });
         }
         break;
       case "error":
@@ -116,6 +110,14 @@ function createCropperWindowsOnAllDisplays() {
   screen.getAllDisplays().forEach((display) => {
     cropperWindows.push(createCropperWindow(display));
   });
+}
+
+function removeCropperWindows() {
+  cropperWindows.forEach((cropperWindow) => {
+    cropperWindow.removeAllListeners();
+    cropperWindow.close();
+  });
+  cropperWindows = [];
 }
 
 function setDisplayMediaRequestHandler(displayId: number) {
@@ -133,7 +135,15 @@ app.on("window-all-closed", () => {
   app.quit();
 });
 
+app.on("before-quit", () => {
+  streamWindow?.removeAllListeners();
+  frameWindow?.close();
+  streamWindow = null;
+  frameWindow = null;
+});
+
 app.on("ready", async () => {
+  initMenu();
   initEvents();
   createCropperWindowsOnAllDisplays();
 });

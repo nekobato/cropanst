@@ -15,6 +15,7 @@ export const createWindow = (bounds: Rectangle) => {
     hasShadow: false,
     skipTaskbar: true,
     show: false,
+    focusable: false,
     webPreferences: {
       preload,
       devTools: isDevelopment,
@@ -24,10 +25,6 @@ export const createWindow = (bounds: Rectangle) => {
   win.setAlwaysOnTop(true, "screen-saver");
   win.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
   win.setIgnoreMouseEvents(true);
-
-  win.on("blur", () => {
-    win.setAlwaysOnTop(true, "screen-saver");
-  });
 
   if (isDevelopment) {
     win.loadURL(pageRoot + `#/frame`);
