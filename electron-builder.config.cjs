@@ -1,17 +1,23 @@
 require("dotenv").config();
 const pkg = require("./package.json");
-const productName = "Crop and Stream";
 
+/**
+ * @type {import('electron-builder').Configuration}
+ * @see https://www.electron.build/configuration/configuration
+ */
 const config = {
-  appId: `net.nekobato.${productName}`,
+  appId: `net.nekobato.cropanst`,
   asar: true,
-  productName,
+  productName: "Crop and Stream",
   directories: {
     output: `release/${pkg.version}`,
   },
   files: ["out"],
   mac: {
-    target: ["default"],
+    target: {
+      target: "dmg",
+      arch: ["universal"],
+    },
     icon: "out/renderer/icons/mac/icon.icns",
     category: "public.app-category.productivity",
     entitlements: "build/entitlements.mac.plist",
