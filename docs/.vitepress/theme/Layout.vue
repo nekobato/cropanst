@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ElCarousel, ElCarouselItem } from "element-plus";
-import { useData } from "vitepress";
+import { useData, withBase } from "vitepress";
 import DonwloadLink from "./DonwloadLink.vue";
 import RefLink from "./RefLink.vue";
 import { ThemeConfig } from "../types/themeConfig";
@@ -14,7 +14,11 @@ const { site, frontmatter } = useData<ThemeConfig>();
     <main>
       <div class="contents-box">
         <div class="contents-side">
-          <img class="appicon" :src="site.themeConfig.appicon" alt="logo" />
+          <img
+            class="appicon"
+            :src="withBase(site.themeConfig.appicon)"
+            alt="logo"
+          />
           <div v-if="frontmatter.home">
             <h1>{{ site.title }}</h1>
             <p>{{ site.description }}</p>
@@ -38,7 +42,11 @@ const { site, frontmatter } = useData<ThemeConfig>();
               :key="thumbnail"
               class="thumnail-item"
             >
-              <img class="thumbnail" :src="thumbnail" alt="thumbnail" />
+              <img
+                class="thumbnail"
+                :src="withBase(thumbnail)"
+                alt="thumbnail"
+              />
             </ElCarouselItem>
           </ElCarousel>
         </div>
