@@ -3,6 +3,16 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "author": {
+    "email": "nekobato@gmail.com",
+    "name": "nekobato",
+    "url": "https://nekobato.net"
+  },
+  "homepage": "https://github.com/nekobato/cropanst",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nekobato/cropanst"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "vitepress dev",
@@ -10,8 +20,7 @@
     "preview": "vitepress preview"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "@iconify/vue": "^4.1.2",
     "bowser": "^2.11.0",
