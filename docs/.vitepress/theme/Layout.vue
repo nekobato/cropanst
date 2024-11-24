@@ -7,8 +7,6 @@ import { ThemeConfig } from "../types/themeConfig";
 
 // https://vitepress.dev/reference/runtime-api#usedata
 const { site, frontmatter } = useData<ThemeConfig>();
-
-console.log(site.value.themeConfig);
 </script>
 
 <template>
@@ -21,10 +19,12 @@ console.log(site.value.themeConfig);
             <h1>{{ site.title }}</h1>
             <p>{{ site.description }}</p>
           </div>
-          <DonwloadLink
-            class="download-link"
-            :links="site.themeConfig.downloadLinks"
-          />
+          <ClientOnly>
+            <DonwloadLink
+              class="download-link"
+              :links="site.themeConfig.downloadLinks"
+            />
+          </ClientOnly>
           <RefLink class="ref-link" :links="site.themeConfig.refLinks" />
         </div>
         <div class="thumbnails-side">
