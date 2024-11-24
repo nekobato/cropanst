@@ -9,12 +9,12 @@ export default defineConfigWithTheme<ThemeConfig>({
   description:
     "スクリーンの一部を切り取ってストリーミング共有するためのウィンドウを作るアプリケーション",
   themeConfig: {
-    appicon: "/assets/images/appicon.png",
+    appicon: "/images/appicon.png",
     thumbnails: [
-      "/assets/images/thumbnail1.png",
-      "/assets/images/thumbnail2.png",
-      "/assets/images/thumbnail3.png",
-      "/assets/images/thumbnail4.png",
+      "/images/thumbnail1.png",
+      "/images/thumbnail2.png",
+      "/images/thumbnail3.png",
+      "/images/thumbnail4.png",
     ],
     downloadLinks: {
       macOS: {
