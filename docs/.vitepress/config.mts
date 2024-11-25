@@ -2,15 +2,31 @@ import { defineConfigWithTheme } from "vitepress";
 import { ThemeConfig } from "./types/themeConfig";
 import rootPkg from "../../package.json";
 
+const title = "Crop and Stream";
+const description =
+  "スクリーンの一部を切り取って画面共有するためのアプリケーション";
+
 // https://vitepress.dev/reference/site-config
 export default defineConfigWithTheme<ThemeConfig>({
-  lang: "ja-JP",
-  head: [["link", { rel: "icon", href: "./favicon.png" }]],
-  title: "Crop and Stream",
+  lang: "ja",
+  head: [
+    ["link", { rel: "icon", href: "./favicon.png" }],
+    ["meta", { name: "og:type", content: "website" }],
+    [
+      "meta",
+      { name: "og:url", content: "https://nekobato.github.io/cropanst/" },
+    ],
+    ["meta", { name: "og:image", content: "/images/thumbnail1.png" }],
+    ["meta", { name: "og:title", content: title }],
+    ["meta", { name: "og:site_name", content: title }],
+    ["meta", { name: "og:description", content: description }],
+    ["meta", { name: "og:locale", content: "ja_JP" }],
+    ["meta", { name: "twitter:card", content: "summary" }],
+  ],
+  title,
   base: "/cropanst/",
   assetsDir: "assets",
-  description:
-    "スクリーンの一部を切り取ってストリーミング共有するためのウィンドウを作るアプリケーション",
+  description,
   themeConfig: {
     appicon: "/images/appicon.png",
     thumbnails: [
