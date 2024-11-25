@@ -4,7 +4,7 @@ import rootPkg from "../../package.json";
 
 const title = "Crop and Stream";
 const description =
-  "スクリーンの一部を切り取って画面共有するためのアプリケーション";
+  "今すぐにスクリーンの一部を切り取って画面共有する デスクトップアプリケーション";
 
 // https://vitepress.dev/reference/site-config
 export default defineConfigWithTheme<ThemeConfig>({
