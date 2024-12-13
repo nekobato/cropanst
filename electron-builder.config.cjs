@@ -1,12 +1,7 @@
-require("dotenv").config();
 const pkg = require("./package.json");
 
-/**
- * @type {import('electron-builder').Configuration}
- * @see https://www.electron.build/configuration/configuration
- */
 const config = {
-  appId: `net.nekobato.cropanst`,
+  appId: `net.nekobato.CropAndStream`,
   asar: true,
   productName: "Crop and Stream",
   directories: {
@@ -14,10 +9,7 @@ const config = {
   },
   files: ["out"],
   mac: {
-    target: {
-      target: "dmg",
-      arch: ["universal"],
-    },
+    target: ["default"],
     icon: "out/renderer/icons/mac/icon.icns",
     category: "public.app-category.productivity",
     entitlements: "build/entitlements.mac.plist",
@@ -27,16 +19,16 @@ const config = {
     },
     publish: ["github"],
   },
-  win: {
-    target: [
-      {
-        target: "portable",
-        arch: ["x64"],
-      },
-    ],
-    icon: "out/renderer/icons/win/icon.ico",
-    publish: ["github"],
-  },
+  // win: {
+  //   target: [
+  //     {
+  //       target: "nsis",
+  //       arch: ["x64"],
+  //     },
+  //   ],
+  //   icon: "out/renderer/icons/win/icon.ico",
+  //   publish: ["github"],
+  // },
   nsis: {
     oneClick: false,
     perMachine: false,
