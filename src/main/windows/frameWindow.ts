@@ -3,7 +3,7 @@ import { isDevelopment, pageRoot, preload } from "../static";
 
 export const createWindow = (bounds: Rectangle) => {
   const win = new BrowserWindow({
-    title: "Streaming frame",
+    title: "Crop & Stream (frame)",
     resizable: false,
     movable: false,
     minimizable: false,

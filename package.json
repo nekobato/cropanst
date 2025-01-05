@@ -20,13 +20,14 @@
     "build:mac": "electron-vite build && electron-builder --config electron-builder.config.cjs -m",
     "build:win": "electron-vite build && electron-builder --config electron-builder.config.cjs -w",
     "preview": "electron-vite preview",
-    "release": "electron-vite build && electron-builder --publish always --config electron-builder.config.cjs --mw",
+    "release": "electron-vite build && electron-builder --publish always --config electron-builder.config.cjs",
     "build:icon": "electron-icon-builder --input=./src/renderer/public/icon.png --output=./src/renderer/public"
   },
   "main": "out/main/index.js",
   "devDependencies": {
     "@electron/notarize": "^2.3.2",
     "@iconify/vue": "^4.1.2",
+    "@prettier/plugin-xml": "^3.4.1",
     "@vitejs/plugin-vue": "^5.2.1",
     "electron": "33.2.0",
     "electron-builder": "^25.1.8",
@@ -44,8 +45,5 @@
     "vue": "^3.5.13",
     "vue-router": "^4.5.0",
     "vue-tsc": "^2.1.10"
-  },
-  "dependencies": {
-    "mac-screen-capture-permissions": "^2.1.0"
   }
 }

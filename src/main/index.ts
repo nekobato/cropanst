@@ -6,12 +6,9 @@ import {
   screen,
   session,
   desktopCapturer,
+  systemPreferences,
 } from "electron";
 import log from "electron-log";
-import {
-  hasScreenCapturePermission,
-  hasPromptedForPermission,
-} from "mac-screen-capture-permissions";
 import { checkUpdate } from "./autoupdater";
 import { createWindow as createStreamWindow } from "./windows/streamWindow";
 import { createWindow as createCropperWindow } from "./windows/cropperWindow";
@@ -27,17 +24,11 @@ if (!app.requestSingleInstanceLock()) {
 }
 
 if (process.platform === "darwin") {
-  const hadAskForPermission = hasPromptedForPermission();
-  const hasPermission = hasScreenCapturePermission();
-  if (!hasPermission && !hadAskForPermission) {
-    app.quit();
-    process.exit(0);
-  }
-
-  if (!hasPermission) {
-    app.quit();
-    process.exit(0);
-  }
+  systemPreferences.askForMediaAccess("camera").then((granted) => {
+    if (!granted) {
+      app.quit();
+    }
+  });
 }
 
 // https://www.electronjs.org/ja/docs/latest/tutorial/performance#8-%E3%83%87%E3%83%95%E3%82%A9%E3%83%AB%E3%83%88%E3%81%AE%E3%83%A1%E3%83%8B%E3%83%A5%E3%83%BC%E3%81%8C%E4%B8%8D%E8%A6%81%E3%81%AA%E3%82%89-menusetapplicationmenunull-%E3%82%92%E5%91%BC%E3%81%B3%E5%87%BA%E3%81%99
