@@ -6,16 +6,16 @@ const title = "Crop and Stream";
 const description =
   "今すぐにスクリーンの一部を切り取って画面共有する デスクトップアプリケーション";
 
+const repositoryUrl = rootPkg.repository.url;
+const version = rootPkg.version;
+
 // https://vitepress.dev/reference/site-config
 export default defineConfigWithTheme<ThemeConfig>({
   lang: "ja",
   head: [
     ["link", { rel: "icon", href: "./favicon.png" }],
     ["meta", { name: "og:type", content: "website" }],
-    [
-      "meta",
-      { name: "og:url", content: "https://nekobato.github.io/cropanst/" },
-    ],
+    ["meta", { name: "og:url", content: repositoryUrl }],
     ["meta", { name: "og:image", content: "/images/thumbnail1.png" }],
     ["meta", { name: "og:title", content: title }],
     ["meta", { name: "og:site_name", content: title }],
@@ -37,9 +37,11 @@ export default defineConfigWithTheme<ThemeConfig>({
     ],
     downloadLinks: {
       macOS: {
-        arm64:
-          "https://github.com/nekobato/cropanst/releases/download/v0.0.3/Crop-and-Stream-0.0.3-arm64.dmg",
-        x64: "https://github.com/nekobato/cropanst/releases/download/v0.0.3/Crop-and-Stream-0.0.3-x64.dmg",
+        arm64: `${repositoryUrl}/releases/download/v${version}/Crop-and-Stream-${version}-arm64.dmg`,
+        x64: `${repositoryUrl}/releases/download/v${version}/Crop-and-Stream-${version}.dmg`,
+      },
+      windows: {
+        x64: `${repositoryUrl}/releases/download/v${version}/Crop-and-Stream-Setup-${version}.exe`,
       },
     },
     refLinks: [
