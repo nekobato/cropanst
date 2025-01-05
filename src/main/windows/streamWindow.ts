@@ -1,6 +1,5 @@
 import { app, BrowserWindow } from "electron";
-import path from "node:path";
-import { isDevelopment, pageRoot, preload, rendererRoot } from "../static";
+import { isDevelopment, pageRoot, preload } from "../static";
 
 export const createWindow = (data: {
   displayId: number;

@@ -23,14 +23,6 @@ if (!app.requestSingleInstanceLock()) {
   process.exit(0);
 }
 
-if (process.platform === "darwin") {
-  systemPreferences.askForMediaAccess("camera").then((granted) => {
-    if (!granted) {
-      app.quit();
-    }
-  });
-}
-
 // https://www.electronjs.org/ja/docs/latest/tutorial/performance#8-%E3%83%87%E3%83%95%E3%82%A9%E3%83%AB%E3%83%88%E3%81%AE%E3%83%A1%E3%83%8B%E3%83%A5%E3%83%BC%E3%81%8C%E4%B8%8D%E8%A6%81%E3%81%AA%E3%82%89-menusetapplicationmenunull-%E3%82%92%E5%91%BC%E3%81%B3%E5%87%BA%E3%81%99
 Menu.setApplicationMenu(null);
 
@@ -134,6 +126,13 @@ app.on("before-quit", () => {
 });
 
 app.on("ready", async () => {
+  if (process.platform === "darwin") {
+    const granted = await systemPreferences.askForMediaAccess("camera");
+    if (!granted) {
+      app.quit();
+      return;
+    }
+  }
   initMenu();
   initEvents();
   createCropperWindowsOnAllDisplays();
