@@ -26,7 +26,6 @@ export const createWindow = (data: {
     frame: false,
     hasShadow: true,
     focusable: true,
-    icon: path.join(rendererRoot, "./public/icon.png"),
   });
 
   win.setContentSize(data.bounds.width, data.bounds.height);

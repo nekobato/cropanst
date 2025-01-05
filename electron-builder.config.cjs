@@ -14,7 +14,7 @@ const config = {
       target: "dmg",
       arch: ["x64", "arm64"],
     },
-    icon: "out/renderer/icons/mac/icon.icns",
+    icon: "build/icon.icns",
     category: "public.app-category.productivity",
     entitlements: "build/entitlements.mac.plist",
     entitlementsInherit: "build/entitlements.mac.plist",
@@ -27,7 +27,7 @@ const config = {
         arch: ["x64"],
       },
     ],
-    icon: "out/renderer/icons/win/icon.ico",
+    icon: "build/icon.ico",
     publish: ["github"],
   },
   nsis: {

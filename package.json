@@ -16,12 +16,12 @@
   "scripts": {
     "postinstall": "rm -rf node_modules/electron/dist && node node_modules/electron/install.js",
     "dev": "electron-vite dev",
-    "build": "electron-vite build && electron-builder --config electron-builder.config.cjs",
-    "build:mac": "electron-vite build && electron-builder --config electron-builder.config.cjs -m",
-    "build:win": "electron-vite build && electron-builder --config electron-builder.config.cjs -w",
-    "preview": "electron-vite preview",
-    "release": "electron-vite build && electron-builder --publish always --config electron-builder.config.cjs",
-    "build:icon": "electron-icon-builder --input=./src/renderer/public/icon.png --output=./src/renderer/public"
+    "build:mac": "electron-vite build && electron-builder -m -c electron-builder.config.cjs",
+    "build:win": "electron-vite build && electron-builder -w -c electron-builder.config.cjs",
+    "build:icon": "electron-icon-builder --input=./src/renderer/public/icon.png --output=./src/renderer/public && npm run copy:icon",
+    "copy:icon": "cp ./src/renderer/public/icons/mac/icon.icns ./build/icon.icns && cp ./src/renderer/public/icons/win/icon.ico ./build/icon.ico",
+    "release": "electron-vite build && electron-builder --mac --win --publish always -c electron-builder.config.cjs",
+    "publish": "electron-builder publish"
   },
   "main": "out/main/index.js",
   "devDependencies": {
