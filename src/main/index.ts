@@ -127,11 +127,7 @@ app.on("before-quit", () => {
 
 app.on("ready", async () => {
   if (process.platform === "darwin") {
-    const granted = await systemPreferences.askForMediaAccess("camera");
-    if (!granted) {
-      app.quit();
-      return;
-    }
+    await systemPreferences.askForMediaAccess("camera");
   }
   initMenu();
   initEvents();
