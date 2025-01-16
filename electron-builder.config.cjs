@@ -12,7 +12,7 @@ const config = {
   mac: {
     target: {
       target: "dmg",
-      arch: ["x64", "arm64"],
+      arch: ["arm64", "x64"],
     },
     icon: "build/icon.icns",
     category: "public.app-category.productivity",
