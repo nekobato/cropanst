@@ -11,7 +11,7 @@
     "type": "git",
     "url": "https://github.com/nekobato/cropanst"
   },
-  "version": "0.0.4",
+  "version": "0.0.5",
   "private": true,
   "scripts": {
     "postinstall": "rm -rf node_modules/electron/dist && node node_modules/electron/install.js",
