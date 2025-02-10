@@ -34,8 +34,8 @@ export const createWindow = (display: Electron.Display) => {
   }
 
   win.setBounds({
-    x: display.bounds.x,
-    y: display.bounds.y,
+    x: display.bounds.x * display.scaleFactor,
+    y: display.bounds.y * display.scaleFactor,
     width: display.bounds.width * display.scaleFactor,
     height: display.bounds.height * display.scaleFactor,
   });

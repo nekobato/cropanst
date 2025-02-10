@@ -68,10 +68,10 @@ function initEvents() {
 
         if (targetDisplay) {
           frameWindow = createFrameWindow({
-            x: bounds.x + targetDisplay.bounds.x,
-            y: bounds.y + targetDisplay.bounds.y,
-            width: bounds.width,
-            height: bounds.height,
+            x: bounds.x * targetDisplay.scaleFactor + targetDisplay.bounds.x,
+            y: bounds.y * targetDisplay.scaleFactor + targetDisplay.bounds.y,
+            width: bounds.width * targetDisplay.scaleFactor,
+            height: bounds.height * targetDisplay.scaleFactor,
           });
           streamWindow = createStreamWindow({
             ...payload,
