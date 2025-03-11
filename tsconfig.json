@@ -11,6 +11,7 @@
     "baseUrl": "./",
     "strict": true,
     "allowSyntheticDefaultImports": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "types": ["./src/types"]
   }
 }

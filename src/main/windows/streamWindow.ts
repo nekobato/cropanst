@@ -1,19 +1,7 @@
 import { app, BrowserWindow } from "electron";
 import { isDevelopment, pageRoot, preload } from "../static";
 
-export const createWindow = (data: {
-  displayId: number;
-  bounds: {
-    x: number;
-    y: number;
-    width: number;
-    height: number;
-  };
-  size: {
-    width: number;
-    height: number;
-  };
-}) => {
+export const createWindow = (data: CreateStreamWindowData) => {
   const win = new BrowserWindow({
     title: "Crop & Stream",
     webPreferences: {
@@ -27,6 +15,7 @@ export const createWindow = (data: {
     focusable: true,
   });
 
+  // ウィンドウサイズを設定（Retinaディスプレイでも正確なサイズで表示）
   win.setContentSize(data.bounds.width, data.bounds.height);
   win.center();
 

@@ -1,9 +1,10 @@
 <script lang="ts" setup>
-import { ref } from "vue";
+import { ref, onUnmounted } from "vue";
 import { Icon } from "@iconify/vue";
 import { log } from "electron-log";
 
 const isFocused = ref(false);
+const animationFrameId = ref<number | null>(null);
 
 const video = ref<HTMLVideoElement | null>(null);
 const canvas = ref<HTMLCanvasElement | null>(null);
@@ -21,14 +22,17 @@ const videoBounds = ref({
   height: 0,
 });
 
+const scale = ref(1);
+
 function drawImage() {
   if (video.value && canvas.value && ctx.value) {
+    // Retinaディスプレイ対応のため、canvasのコンテキストを高解像度で描画
     ctx.value.drawImage(
       video.value,
-      videoBounds.value.x,
-      videoBounds.value.y,
-      videoBounds.value.width,
-      videoBounds.value.height,
+      videoBounds.value.x * scale.value,
+      videoBounds.value.y * scale.value,
+      videoBounds.value.width * scale.value,
+      videoBounds.value.height * scale.value,
       0,
       0,
       canvas.value.width,
@@ -37,29 +41,55 @@ function drawImage() {
   }
 }
 
+function animate() {
+  drawImage();
+  animationFrameId.value = requestAnimationFrame(animate);
+}
+
+function stopAnimation() {
+  if (animationFrameId.value !== null) {
+    cancelAnimationFrame(animationFrameId.value);
+    animationFrameId.value = null;
+  }
+}
+
+onUnmounted(() => {
+  stopAnimation();
+});
+
 function closeWindow() {
   window.ipc.send("exit");
 }
 
-window.ipc.on("cropper:capture", (_, data) => {
+window.ipc.on("cropper:capture", (_, data: CreateStreamWindowData) => {
   displaySize.value = data.size;
   videoBounds.value = data.bounds;
+  scale.value = data.scale;
+
+  // 高解像度キャプチャのためのオプションを設定
   navigator.mediaDevices
     .getDisplayMedia({
       audio: false,
       video: {
-        width: displaySize.value.width,
-        height: displaySize.value.height,
+        width: displaySize.value.width * data.scale,
+        height: displaySize.value.height * data.scale,
         frameRate: 30,
       },
     })
     .then((stream) => {
       if (video.value && canvas.value) {
-        ctx.value = canvas.value.getContext("2d")!;
+        // 高解像度レンダリングのための設定
+        ctx.value = canvas.value.getContext("2d", { alpha: false })!;
+
+        // Retinaディスプレイの場合、コンテキストの画質を向上
+        if (scale.value > 1) {
+          ctx.value.imageSmoothingEnabled = false; // ピクセル補間を無効化して鮮明に
+        }
+
         video.value.srcObject = stream;
         video.value.onloadedmetadata = (e) => {
           video.value?.play();
-          setInterval(() => drawImage(), 1000 / 30);
+          animate();
         };
       }
     })
@@ -86,8 +116,12 @@ window.ipc.on("blur", () => {
   <canvas
     ref="canvas"
     class="canvas"
-    :width="videoBounds.width"
-    :height="videoBounds.height"
+    :width="videoBounds.width * scale"
+    :height="videoBounds.height * scale"
+    :style="{
+      width: videoBounds.width + 'px',
+      height: videoBounds.height + 'px',
+    }"
   ></canvas>
   <button
     @click="closeWindow"
@@ -103,10 +137,9 @@ window.ipc.on("blur", () => {
   display: none;
 }
 .canvas {
-  width: 100%;
-  height: 100%;
   cursor: move;
   -webkit-app-region: drag;
+  /* width/heightはstyle属性で設定するため、ここでは削除 */
 }
 
 .close-button {

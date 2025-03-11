@@ -67,18 +67,22 @@ function initEvents() {
         removeCropperWindows();
 
         if (targetDisplay) {
+          // Cropしている場所を示すFrameWindowを表示
           frameWindow = createFrameWindow({
-            x: bounds.x * targetDisplay.scaleFactor + targetDisplay.bounds.x,
-            y: bounds.y * targetDisplay.scaleFactor + targetDisplay.bounds.y,
-            width: bounds.width * targetDisplay.scaleFactor,
-            height: bounds.height * targetDisplay.scaleFactor,
+            x: bounds.x + targetDisplay.bounds.x,
+            y: bounds.y + targetDisplay.bounds.y,
+            width: bounds.width,
+            height: bounds.height,
           });
+
+          // Cropした画面を表示するStreamWindowを表示
           streamWindow = createStreamWindow({
             ...payload,
             size: {
-              width: targetDisplay.bounds.width * targetDisplay.scaleFactor,
-              height: targetDisplay.bounds.height * targetDisplay.scaleFactor,
+              width: targetDisplay.bounds.width,
+              height: targetDisplay.bounds.height,
             },
+            scale: targetDisplay.scaleFactor,
           });
         }
         break;
