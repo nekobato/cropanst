@@ -86,6 +86,18 @@ function initEvents() {
           );
           const displaySizePhysical = getDisplaySizePhysical(targetDisplay);
 
+          if (isDevelopment) {
+            log.debug("capture:metrics", {
+              displayId: targetDisplay.id,
+              displayBoundsDip: targetDisplay.bounds,
+              displayScaleFactor: targetDisplay.scaleFactor,
+              boundsDipLocal,
+              boundsDipGlobal,
+              boundsPhysicalLocal,
+              displaySizePhysical,
+            });
+          }
+
           frameWindow = createFrameWindow({
             x: boundsDipGlobal.x,
             y: boundsDipGlobal.y,
