@@ -1,19 +1,21 @@
 import { app, BrowserWindow } from "electron";
 import { isDevelopment, pageRoot, preload } from "../static";
 
+type Rect = Electron.Rectangle;
+
+/**
+ * Create the stream window sized in DIP while sending physical metrics
+ * to the renderer for accurate cropping on HiDPI displays.
+ */
 export const createWindow = (data: {
   displayId: number;
-  bounds: {
-    x: number;
-    y: number;
+  boundsDip: Rect;
+  boundsPhysical: Rect;
+  displaySizePhysical: {
     width: number;
     height: number;
   };
-  size: {
-    width: number;
-    height: number;
-  };
-}) => {
+}): BrowserWindow => {
   const win = new BrowserWindow({
     title: "Crop & Stream",
     webPreferences: {
@@ -27,7 +29,7 @@ export const createWindow = (data: {
     focusable: true,
   });
 
-  win.setContentSize(data.bounds.width, data.bounds.height);
+  win.setContentSize(data.boundsDip.width, data.boundsDip.height);
   win.center();
 
   if (isDevelopment) {

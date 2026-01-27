@@ -10,6 +10,10 @@ import {
 } from "electron";
 import log from "electron-log";
 import { checkUpdate } from "./autoupdater";
+import {
+  getDisplaySizePhysical,
+  toPhysicalLocalRect,
+} from "./displayMetrics";
 import { createWindow as createStreamWindow } from "./windows/streamWindow";
 import { createWindow as createCropperWindow } from "./windows/cropperWindow";
 import { createWindow as createFrameWindow } from "./windows/frameWindow";
@@ -26,7 +30,8 @@ if (!app.requestSingleInstanceLock()) {
 // https://www.electronjs.org/ja/docs/latest/tutorial/performance#8-%E3%83%87%E3%83%95%E3%82%A9%E3%83%AB%E3%83%88%E3%81%AE%E3%83%A1%E3%83%8B%E3%83%A5%E3%83%BC%E3%81%8C%E4%B8%8D%E8%A6%81%E3%81%AA%E3%82%89-menusetapplicationmenunull-%E3%82%92%E5%91%BC%E3%81%B3%E5%87%BA%E3%81%99
 Menu.setApplicationMenu(null);
 
-let cropperWindows: BrowserWindow[] = [];
+let cropperWindows = new Map<number, BrowserWindow>();
+let isCropperActive = false;
 let frameWindow: BrowserWindow | null;
 let streamWindow: BrowserWindow | null;
 
@@ -67,18 +72,31 @@ function initEvents() {
         removeCropperWindows();
 
         if (targetDisplay) {
+          const boundsDipLocal = bounds;
+          const boundsDipGlobal = {
+            x: boundsDipLocal.x + targetDisplay.bounds.x,
+            y: boundsDipLocal.y + targetDisplay.bounds.y,
+            width: boundsDipLocal.width,
+            height: boundsDipLocal.height,
+          };
+          // Retina / HiDPI: selection is DIP, but capture cropping is physical pixels.
+          const boundsPhysicalLocal = toPhysicalLocalRect(
+            boundsDipLocal,
+            targetDisplay
+          );
+          const displaySizePhysical = getDisplaySizePhysical(targetDisplay);
+
           frameWindow = createFrameWindow({
-            x: bounds.x + targetDisplay.bounds.x,
-            y: bounds.y + targetDisplay.bounds.y,
-            width: bounds.width,
-            height: bounds.height,
+            x: boundsDipGlobal.x,
+            y: boundsDipGlobal.y,
+            width: boundsDipGlobal.width,
+            height: boundsDipGlobal.height,
           });
           streamWindow = createStreamWindow({
-            ...payload,
-            size: {
-              width: targetDisplay.bounds.width * targetDisplay.scaleFactor,
-              height: targetDisplay.bounds.height * targetDisplay.scaleFactor,
-            },
+            displayId: Number(displayId),
+            boundsDip: boundsDipLocal,
+            boundsPhysical: boundsPhysicalLocal,
+            displaySizePhysical,
           });
         }
         break;
@@ -89,18 +107,123 @@ function initEvents() {
   });
 }
 
-function createCropperWindowsOnAllDisplays() {
-  screen.getAllDisplays().forEach((display) => {
-    cropperWindows.push(createCropperWindow(display));
+/**
+ * Create or update a cropper window so it matches the given display's bounds in DIP.
+ */
+function upsertCropperWindow(display: Electron.Display): void {
+  const existing = cropperWindows.get(display.id);
+
+  if (existing && !existing.isDestroyed()) {
+    existing.setBounds(display.bounds);
+    return;
+  }
+
+  if (existing?.isDestroyed()) {
+    cropperWindows.delete(display.id);
+  }
+
+  const win = createCropperWindow(display);
+  cropperWindows.set(display.id, win);
+}
+
+/**
+ * Dispose of a cropper window for a display id if it exists.
+ */
+function disposeCropperWindow(displayId: number): void {
+  const win = cropperWindows.get(displayId);
+  if (!win) {
+    return;
+  }
+
+  cropperWindows.delete(displayId);
+
+  if (win.isDestroyed()) {
+    return;
+  }
+
+  win.removeAllListeners();
+  win.close();
+}
+
+/**
+ * Synchronize cropper windows with the current displays while cropper mode is active.
+ */
+function syncCropperWindows(): void {
+  if (!isCropperActive) {
+    return;
+  }
+
+  const displays = screen.getAllDisplays();
+  const displayIds = new Set(displays.map((display) => display.id));
+
+  displays.forEach((display) => {
+    upsertCropperWindow(display);
+  });
+
+  Array.from(cropperWindows.keys()).forEach((displayId) => {
+    if (!displayIds.has(displayId)) {
+      disposeCropperWindow(displayId);
+    }
   });
 }
 
-function removeCropperWindows() {
+/**
+ * Start cropper windows and enable display synchronization.
+ */
+function startCropperWindows(): void {
+  isCropperActive = true;
+  syncCropperWindows();
+}
+
+/**
+ * Close all cropper windows and disable display synchronization.
+ */
+function removeCropperWindows(): void {
+  isCropperActive = false;
+
   cropperWindows.forEach((cropperWindow) => {
+    if (cropperWindow.isDestroyed()) {
+      return;
+    }
     cropperWindow.removeAllListeners();
     cropperWindow.close();
   });
-  cropperWindows = [];
+
+  cropperWindows.clear();
+}
+
+/**
+ * Keep cropper windows in sync with display lifecycle and metrics changes.
+ */
+function initDisplayEvents(): void {
+  screen.on("display-added", () => {
+    syncCropperWindows();
+  });
+
+  screen.on("display-removed", () => {
+    syncCropperWindows();
+  });
+
+  screen.on("display-metrics-changed", (_, display, changedMetrics) => {
+    if (!isCropperActive) {
+      return;
+    }
+
+    const shouldResync = changedMetrics.some(
+      (metric) =>
+        metric === "bounds" ||
+        metric === "workArea" ||
+        metric === "scaleFactor" ||
+        metric === "rotation"
+    );
+
+    if (!shouldResync) {
+      return;
+    }
+
+    upsertCropperWindow(display);
+    syncCropperWindows();
+  });
 }
 
 function setDisplayMediaRequestHandler(displayId: number) {
@@ -131,7 +254,8 @@ app.on("ready", async () => {
   }
   initMenu();
   initEvents();
-  createCropperWindowsOnAllDisplays();
+  initDisplayEvents();
+  startCropperWindows();
 });
 
 if (isDevelopment) {

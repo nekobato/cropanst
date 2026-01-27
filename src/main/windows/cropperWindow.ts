@@ -36,8 +36,8 @@ export const createWindow = (display: Electron.Display) => {
   win.setBounds({
     x: display.bounds.x,
     y: display.bounds.y,
-    width: display.bounds.width * display.scaleFactor,
-    height: display.bounds.height * display.scaleFactor,
+    width: display.bounds.width,
+    height: display.bounds.height,
   });
 
   win.webContents.on("did-finish-load", () => {

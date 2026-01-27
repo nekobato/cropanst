@@ -9,26 +9,29 @@ const video = ref<HTMLVideoElement | null>(null);
 const canvas = ref<HTMLCanvasElement | null>(null);
 const ctx = ref<CanvasRenderingContext2D>();
 
-const displaySize = ref({
+const displaySizePhysical = ref({
   width: 0,
   height: 0,
 });
 
-const videoBounds = ref({
+const boundsPhysical = ref({
   x: 0,
   y: 0,
   width: 0,
   height: 0,
 });
 
+/**
+ * Draw the selected physical-pixel region into the canvas.
+ */
 function drawImage() {
   if (video.value && canvas.value && ctx.value) {
     ctx.value.drawImage(
       video.value,
-      videoBounds.value.x,
-      videoBounds.value.y,
-      videoBounds.value.width,
-      videoBounds.value.height,
+      boundsPhysical.value.x,
+      boundsPhysical.value.y,
+      boundsPhysical.value.width,
+      boundsPhysical.value.height,
       0,
       0,
       canvas.value.width,
@@ -37,19 +40,23 @@ function drawImage() {
   }
 }
 
+/**
+ * Request the main process to close the app.
+ */
 function closeWindow() {
   window.ipc.send("exit");
 }
 
 window.ipc.on("cropper:capture", (_, data) => {
-  displaySize.value = data.size;
-  videoBounds.value = data.bounds;
+  // Retina / HiDPI: use physical metrics for getDisplayMedia and drawImage cropping.
+  displaySizePhysical.value = data.displaySizePhysical;
+  boundsPhysical.value = data.boundsPhysical;
   navigator.mediaDevices
     .getDisplayMedia({
       audio: false,
       video: {
-        width: displaySize.value.width,
-        height: displaySize.value.height,
+        width: displaySizePhysical.value.width,
+        height: displaySizePhysical.value.height,
         frameRate: 30,
       },
     })
@@ -80,14 +87,14 @@ window.ipc.on("blur", () => {
     class="video"
     autoplay
     playsinline
-    :width="displaySize.width"
-    :height="displaySize.height"
+    :width="displaySizePhysical.width"
+    :height="displaySizePhysical.height"
   ></video>
   <canvas
     ref="canvas"
     class="canvas"
-    :width="videoBounds.width"
-    :height="videoBounds.height"
+    :width="boundsPhysical.width"
+    :height="boundsPhysical.height"
   ></canvas>
   <button
     @click="closeWindow"
