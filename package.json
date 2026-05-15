@@ -59,10 +59,7 @@
     ],
     "onlyBuiltDependencies": [
       "electron",
-      "electron-winstaller",
-      "esbuild",
-      "phantomjs-prebuilt",
-      "vue-demi"
+      "electron-winstaller"
     ]
   }
 }
