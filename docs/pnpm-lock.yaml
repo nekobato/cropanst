@@ -6,22 +6,22 @@ settings:
 
 devDependencies:
   '@iconify/vue':
-    specifier: ^5.0.1
+    specifier: 5.0.1
     version: 5.0.1(vue@3.5.34)
   bowser:
-    specifier: ^2.11.0
+    specifier: 2.14.1
     version: 2.14.1
   element-plus:
-    specifier: ^2.8.7
+    specifier: 2.13.7
     version: 2.13.7(vue@3.5.34)
   sass-embedded:
-    specifier: ^1.81.0
+    specifier: 1.99.0
     version: 1.99.0
   vitepress:
-    specifier: ^1.5.0
+    specifier: 1.6.4
     version: 1.6.4(@algolia/client-search@5.52.1)(sass-embedded@1.99.0)(search-insights@2.17.3)
   vue:
-    specifier: ^3.5.12
+    specifier: 3.5.34
     version: 3.5.34
 
 packages:
