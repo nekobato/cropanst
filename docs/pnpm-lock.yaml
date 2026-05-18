@@ -12,8 +12,8 @@ devDependencies:
     specifier: 2.14.1
     version: 2.14.1
   element-plus:
-    specifier: 2.13.7
-    version: 2.13.7(vue@3.5.34)
+    specifier: 2.14.0
+    version: 2.14.0(vue@3.5.34)
   sass-embedded:
     specifier: 1.99.0
     version: 1.99.0
@@ -977,10 +977,6 @@ packages:
     resolution: {integrity: sha512-ko/gIFJRv177XgZsZcBwnqJN5x/Gien8qNOn0D5bQU/zAzVf9Zt3BlcUiLqhV9y4ARk0GbT3tnUiPNgnTXzc/Q==}
     dev: true
 
-  /@types/web-bluetooth@0.0.20:
-    resolution: {integrity: sha512-g9gZnnXVq7gM7v3tJCWV/qw7w+KeOlSHAhgF9RytFyifW6AF61hdT2ucrYhPq9hLs5JIryeupHV3qGk95dH9ow==}
-    dev: true
-
   /@types/web-bluetooth@0.0.21:
     resolution: {integrity: sha512-oIQLCGWtcFZy2JW77j9k8nHzAOpqMHLQejDA48XXMWH6tjCQHz5RCFz1bzsmROyL6PUm+LLnUiI4BCn221inxA==}
     dev: true
@@ -1098,17 +1094,6 @@ packages:
     resolution: {integrity: sha512-24uqU4OIiX29ryC3MeWid/Xf2fa2EFRUVLb77nRhk+UrTVrh/XiGtFAFmJBAtBRbjwNdsPRP+jj/OL27Eg1NDA==}
     dev: true
 
-  /@vueuse/core@12.0.0:
-    resolution: {integrity: sha512-C12RukhXiJCbx4MGhjmd/gH52TjJsc3G0E0kQj/kb19H3Nt6n1CA4DRWuTdWWcaFRdlTe0npWDS942mvacvNBw==}
-    dependencies:
-      '@types/web-bluetooth': 0.0.20
-      '@vueuse/metadata': 12.0.0
-      '@vueuse/shared': 12.0.0
-      vue: 3.5.34
-    transitivePeerDependencies:
-      - typescript
-    dev: true
-
   /@vueuse/core@12.8.2:
     resolution: {integrity: sha512-HbvCmZdzAu3VGi/pWYm5Ut+Kd9mn1ZHnn4L5G8kOQTPs/IwIAmJoBrmYk2ckLArgMXZj0AW3n5CAejLUO+PhdQ==}
     dependencies:
@@ -1118,6 +1103,17 @@ packages:
       vue: 3.5.34
     transitivePeerDependencies:
       - typescript
+    dev: true
+
+  /@vueuse/core@14.3.0(vue@3.5.34):
+    resolution: {integrity: sha512-aHfz47g0ZhMtTVHmIzMVpJy8ePhhOy68GY5bv110+5DVtZ+W7BsOx+m61UNQqfrWyPztIHIanWa3E2tib3NFIw==}
+    peerDependencies:
+      vue: ^3.5.0
+    dependencies:
+      '@types/web-bluetooth': 0.0.21
+      '@vueuse/metadata': 14.3.0
+      '@vueuse/shared': 14.3.0(vue@3.5.34)
+      vue: 3.5.34
     dev: true
 
   /@vueuse/integrations@12.8.2(focus-trap@7.8.0):
@@ -1169,20 +1165,12 @@ packages:
       - typescript
     dev: true
 
-  /@vueuse/metadata@12.0.0:
-    resolution: {integrity: sha512-Yzimd1D3sjxTDOlF05HekU5aSGdKjxhuhRFHA7gDWLn57PRbBIh+SF5NmjhJ0WRgF3my7T8LBucyxdFJjIfRJQ==}
-    dev: true
-
   /@vueuse/metadata@12.8.2:
     resolution: {integrity: sha512-rAyLGEuoBJ/Il5AmFHiziCPdQzRt88VxR+Y/A/QhJ1EWtWqPBBAxTAFaSkviwEuOEZNtW8pvkPgoCZQ+HxqW1A==}
     dev: true
 
-  /@vueuse/shared@12.0.0:
-    resolution: {integrity: sha512-3i6qtcq2PIio5i/vVYidkkcgvmTjCqrf26u+Fd4LhnbBmIT6FN8y6q/GJERp8lfcB9zVEfjdV0Br0443qZuJpw==}
-    dependencies:
-      vue: 3.5.34
-    transitivePeerDependencies:
-      - typescript
+  /@vueuse/metadata@14.3.0:
+    resolution: {integrity: sha512-BwxmbAzwAVF50+MW57GXOUEV61nFBGnlBvrTqj49PqWJu3uw7hdu72ztXeZ33RdZtDY6kO+bfCAE1PCn88Tktw==}
     dev: true
 
   /@vueuse/shared@12.8.2:
@@ -1191,6 +1179,14 @@ packages:
       vue: 3.5.34
     transitivePeerDependencies:
       - typescript
+    dev: true
+
+  /@vueuse/shared@14.3.0(vue@3.5.34):
+    resolution: {integrity: sha512-bZpge9eSXwa4ToSiqJ7j6KRwhAsneMFoSz3LMWKQDkqimm3D/tbFlrklrs/IOqC8tEcYmXQZJ6N0UrjhBirVCg==}
+    peerDependencies:
+      vue: ^3.5.0
+    dependencies:
+      vue: 3.5.34
     dev: true
 
   /algoliasearch@5.52.1:
@@ -1287,10 +1283,10 @@ packages:
       dequal: 2.0.3
     dev: true
 
-  /element-plus@2.13.7(vue@3.5.34):
-    resolution: {integrity: sha512-XdHATFZOyzVFL1DaHQ90IOJQSg9UnSAV+bhDW+YB5UoZ0Hxs50mwqjqfwXkuwpSag+VXXizVcErBR6Movo5daw==}
+  /element-plus@2.14.0(vue@3.5.34):
+    resolution: {integrity: sha512-POgH+TtoreaEKWqYYAVQyE6i8rQMEFqAEublyF29dBA5yASWPLKY6EzfeqBTr2Uv26mPss4vSrMrNPyaK7LX5w==}
     peerDependencies:
-      vue: ^3.3.0
+      vue: ^3.3.7
     dependencies:
       '@ctrl/tinycolor': 4.2.0
       '@element-plus/icons-vue': 2.3.2(vue@3.5.34)
@@ -1298,7 +1294,7 @@ packages:
       '@popperjs/core': /@sxzz/popperjs-es@2.11.8
       '@types/lodash': 4.17.24
       '@types/lodash-es': 4.17.12
-      '@vueuse/core': 12.0.0
+      '@vueuse/core': 14.3.0(vue@3.5.34)
       async-validator: 4.2.5
       dayjs: 1.11.20
       lodash: 4.18.1
@@ -1307,9 +1303,7 @@ packages:
       memoize-one: 6.0.0
       normalize-wheel-es: 1.2.0
       vue: 3.5.34
-      vue-component-type-helpers: 3.2.8
-    transitivePeerDependencies:
-      - typescript
+      vue-component-type-helpers: 3.2.9
     dev: true
 
   /emoji-regex-xs@1.0.0:
@@ -2070,8 +2064,8 @@ packages:
       - universal-cookie
     dev: true
 
-  /vue-component-type-helpers@3.2.8:
-    resolution: {integrity: sha512-9689efAXhN/EV86plgkL/XFiJSXhGtWPG6JDboZ+QnjlUWUUQrQ0ILKQtw4iQsuwIwu5k6Aw+JnehDe7161e7A==}
+  /vue-component-type-helpers@3.2.9:
+    resolution: {integrity: sha512-S3BiWYaLSzHxTpln665ELSrMR9UYmrIDUmhik7nVZxmJjTKL2/a+ew1hvGxksKelivm0ujjWfG1fYOiU/2e8rA==}
     dev: true
 
   /vue@3.5.34:
