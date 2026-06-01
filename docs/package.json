@@ -25,7 +25,7 @@
     "@iconify/vue": "5.0.1",
     "bowser": "2.14.1",
     "element-plus": "2.14.0",
-    "sass-embedded": "1.99.0",
+    "sass-embedded": "1.100.0",
     "vitepress": "1.6.4",
     "vue": "3.5.34"
   }
