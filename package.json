@@ -29,30 +29,30 @@
     "@iconify/vue": "5.0.1",
     "@prettier/plugin-xml": "3.4.2",
     "@vitejs/plugin-vue": "6.0.7",
-    "dmg-builder": "26.8.1",
-    "electron": "42.2.0",
-    "electron-builder": "26.8.1",
-    "electron-builder-squirrel-windows": "26.8.1",
+    "dmg-builder": "26.13.0",
+    "electron": "42.3.0",
+    "electron-builder": "26.13.0",
+    "electron-builder-squirrel-windows": "26.13.0",
     "electron-icon-builder": "2.0.1",
     "electron-log": "5.4.4",
-    "electron-updater": "6.8.3",
+    "electron-updater": "6.8.8",
     "electron-vite": "5.0.0",
-    "element-plus": "2.14.0",
+    "element-plus": "2.14.1",
     "prettier": "3.8.3",
     "sass": "1.100.0",
     "typescript": "6.0.3",
     "vite": "8.0.14",
-    "vite-plugin-electron": "0.29.1",
-    "vite-plugin-electron-renderer": "0.14.7",
-    "vue": "3.5.34",
-    "vue-router": "5.0.7",
-    "vue-tsc": "3.3.1"
+    "vite-plugin-electron": "1.0.0",
+    "vite-plugin-electron-renderer": "1.0.0",
+    "vue": "3.5.35",
+    "vue-router": "5.1.0",
+    "vue-tsc": "3.3.3"
   },
   "pnpm": {
     "overrides": {
       "app-builder-lib": "26.4.0",
-      "dmg-builder": "26.8.1",
-      "electron-builder-squirrel-windows": "26.8.1"
+      "dmg-builder": "26.13.0",
+      "electron-builder-squirrel-windows": "26.13.0"
     },
     "ignoredBuiltDependencies": [
       "@parcel/watcher"
