@@ -1,9 +1,17 @@
 import { BrowserWindow } from "electron";
 import { isDevelopment, pageRoot, preload } from "../static";
 
-export const createWindow = (display: Electron.Display) => {
+/**
+ * Create a hidden cropper window that matches the display's DIP bounds.
+ */
+export const createWindow = (display: Electron.Display): BrowserWindow => {
+  const { x, y, width, height } = display.bounds;
   const win = new BrowserWindow({
     title: "Cropping...",
+    x,
+    y,
+    width,
+    height,
     resizable: false,
     movable: false,
     minimizable: false,
@@ -26,24 +34,17 @@ export const createWindow = (display: Electron.Display) => {
     win.setAlwaysOnTop(true, "screen-saver");
   });
 
+  win.once("ready-to-show", () => {
+    win.show();
+    win.focus();
+  });
+
   if (isDevelopment) {
     win.loadURL(pageRoot + `#/cropper/${display.id}`);
     win.webContents.openDevTools();
   } else {
     win.loadFile(pageRoot, { hash: `/cropper/${display.id}` });
   }
-
-  win.setBounds({
-    x: display.bounds.x,
-    y: display.bounds.y,
-    width: display.bounds.width,
-    height: display.bounds.height,
-  });
-
-  win.webContents.on("did-finish-load", () => {
-    win.show();
-    win.focus();
-  });
 
   return win;
 };

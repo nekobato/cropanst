@@ -1,6 +1,11 @@
 <script lang="ts" setup>
-import { computed, ref } from "vue";
+import { computed, onMounted, onUnmounted, ref } from "vue";
 import { useRoute } from "vue-router";
+
+type ViewportSize = {
+  width: number;
+  height: number;
+};
 
 const route = useRoute();
 
@@ -14,24 +19,39 @@ const overlay = ref(
     } | null
   >null
 );
-const svgStyle = computed(() => {
-  return {
-    width: `${window.innerWidth}px`,
-    height: `${window.innerHeight}px`,
-  };
+
+/**
+ * Read the current renderer viewport dimensions in display-independent pixels.
+ */
+const readViewportSize = (): ViewportSize => ({
+  width: window.innerWidth,
+  height: window.innerHeight,
 });
 
+const viewportSize = ref(readViewportSize());
+
+/**
+ * Build an SVG coordinate system that matches the current viewport.
+ */
 const viewBox = computed(() => {
-  // fill display area
-  return `0 0 ${window.innerWidth} ${window.innerHeight}`;
+  const { width, height } = viewportSize.value;
+  return `0 0 ${width} ${height}`;
 });
 
+/**
+ * Build the even-odd path for the dimmed viewport and optional selection.
+ */
 const pathD = computed(() => {
+  const { width, height } = viewportSize.value;
+
   return overlay.value
-    ? `M0,0 v${window.innerHeight} h${window.innerWidth} v${-window.innerHeight} z M${overlay.value.x},${overlay.value.y} h${overlay.value.width} v${overlay.value.height} h${-overlay.value.width} z`
-    : `M0,0 v${window.innerHeight} h${window.innerWidth} v${-window.innerHeight} z`;
+    ? `M0,0 v${height} h${width} v${-height} z M${overlay.value.x},${overlay.value.y} h${overlay.value.width} v${overlay.value.height} h${-overlay.value.width} z`
+    : `M0,0 v${height} h${width} v${-height} z`;
 });
 
+/**
+ * Start a display-local crop selection.
+ */
 const onMouseDown = (event: MouseEvent) => {
   overlay.value = {
     x: event.clientX,
@@ -41,6 +61,9 @@ const onMouseDown = (event: MouseEvent) => {
   };
 };
 
+/**
+ * Resize the active crop selection to the current pointer position.
+ */
 const onMouseMove = (event: MouseEvent) => {
   if (overlay.value) {
     overlay.value.width = event.clientX - overlay.value.x;
@@ -75,11 +98,41 @@ const onMouseUp = () => {
   });
 };
 
-window.addEventListener("keydown", (event) => {
+/**
+ * Quit the application when the user presses Escape.
+ */
+const onKeyDown = (event: KeyboardEvent): void => {
   if (event.key === "Escape") {
     window.ipc.send("exit");
   }
-});
+};
+
+/**
+ * Synchronize reactive dimensions with the renderer viewport.
+ */
+const syncViewportSize = (): void => {
+  viewportSize.value = readViewportSize();
+};
+
+/**
+ * Register window-scoped listeners for this cropper view.
+ */
+const setupWindowListeners = (): void => {
+  syncViewportSize();
+  window.addEventListener("resize", syncViewportSize);
+  window.addEventListener("keydown", onKeyDown);
+};
+
+/**
+ * Remove window-scoped listeners when this cropper view is unmounted.
+ */
+const teardownWindowListeners = (): void => {
+  window.removeEventListener("resize", syncViewportSize);
+  window.removeEventListener("keydown", onKeyDown);
+};
+
+onMounted(setupWindowListeners);
+onUnmounted(teardownWindowListeners);
 </script>
 
 <template>
@@ -89,11 +142,7 @@ window.addEventListener("keydown", (event) => {
     @mousemove="onMouseMove"
     @mouseup="onMouseUp"
   >
-    <svg
-      :style="svgStyle"
-      :view-box="viewBox"
-      xmlns="http://www.w3.org/2000/svg"
-    >
+    <svg class="overlay" :viewBox="viewBox" xmlns="http://www.w3.org/2000/svg">
       <path fill="rgba(0, 0, 0, 0.5)" :d="pathD" fill-rule="evenodd"></path>
     </svg>
   </div>
@@ -101,8 +150,15 @@ window.addEventListener("keydown", (event) => {
 
 <style lang="scss" scoped>
 .cropper {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  cursor: crosshair;
+}
+
+.overlay {
+  display: block;
   width: 100%;
   height: 100%;
-  cursor: crosshair;
 }
 </style>
