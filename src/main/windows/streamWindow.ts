@@ -2,6 +2,7 @@ import { app, BrowserWindow } from "electron";
 import { isDevelopment, pageRoot, preload } from "../static";
 
 type Rect = Electron.Rectangle;
+type Size = Pick<Electron.Size, "width" | "height">;
 
 /**
  * Create the stream window sized in DIP while sending physical metrics
@@ -10,11 +11,8 @@ type Rect = Electron.Rectangle;
 export const createWindow = (data: {
   displayId: number;
   boundsDip: Rect;
-  boundsPhysical: Rect;
-  displaySizePhysical: {
-    width: number;
-    height: number;
-  };
+  displaySizeDip: Size;
+  displaySizePhysical: Size;
 }): BrowserWindow => {
   const win = new BrowserWindow({
     title: "Crop & Stream",

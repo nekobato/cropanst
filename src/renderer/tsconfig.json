@@ -4,18 +4,19 @@
     "target": "esnext",
     "useDefineForClassFields": true,
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "strict": true,
     "jsx": "preserve",
     "resolveJsonModule": true,
     "esModuleInterop": true,
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
     "lib": ["esnext", "dom"],
-    "baseUrl": ".",
     "allowJs": true,
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["./src/*"]
     },
-    "types": ["./types/png-dpi-reader-writer.d.ts"]
+    "types": ["node"]
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"]
 }

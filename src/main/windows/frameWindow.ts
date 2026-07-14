@@ -1,6 +1,9 @@
 import { BrowserWindow, Rectangle } from "electron";
 import { isDevelopment, pageRoot, preload } from "../static";
 
+/**
+ * Create a non-interactive frame around the selected global DIP bounds.
+ */
 export const createWindow = (bounds: Rectangle) => {
   const win = new BrowserWindow({
     title: "Crop & Stream (frame)",
@@ -25,6 +28,9 @@ export const createWindow = (bounds: Rectangle) => {
   win.setAlwaysOnTop(true, "screen-saver");
   win.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
   win.setIgnoreMouseEvents(true);
+  if (process.platform === "win32") {
+    win.setContentProtection(true);
+  }
   win.excludedFromShownWindowsMenu = false;
 
   if (isDevelopment) {
