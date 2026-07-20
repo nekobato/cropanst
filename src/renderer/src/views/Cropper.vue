@@ -48,29 +48,31 @@ const onMouseMove = (event: MouseEvent) => {
   }
 };
 
+/**
+ * Complete a positive-area selection and send its display-local DIP bounds.
+ */
 const onMouseUp = () => {
-  if (!overlay.value) {
+  const selection = overlay.value;
+  if (!selection) {
     return;
   }
+
   const bounds = {
-    x:
-      overlay.value?.width > 0
-        ? overlay.value.x
-        : overlay.value.x + overlay.value.width,
-    y:
-      overlay.value?.height > 0
-        ? overlay.value.y
-        : overlay.value.y + overlay.value.height,
-    width: Math.abs(overlay.value.width),
-    height: Math.abs(overlay.value.height),
+    x: selection.width > 0 ? selection.x : selection.x + selection.width,
+    y: selection.height > 0 ? selection.y : selection.y + selection.height,
+    width: Math.abs(selection.width),
+    height: Math.abs(selection.height),
   };
-  if (overlay.value) {
-    window.ipc.send("cropper:capture", {
-      displayId: route.params.displayId,
-      bounds: bounds,
-    });
-    overlay.value = null;
+
+  overlay.value = null;
+  if (bounds.width < 1 || bounds.height < 1) {
+    return;
   }
+
+  window.ipc.send("cropper:capture", {
+    displayId: route.params.displayId,
+    bounds: bounds,
+  });
 };
 
 window.addEventListener("keydown", (event) => {

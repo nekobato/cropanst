@@ -10,10 +10,7 @@ import {
 } from "electron";
 import log from "electron-log";
 import { checkUpdate } from "./autoupdater";
-import {
-  getDisplaySizePhysical,
-  toPhysicalLocalRect,
-} from "./displayMetrics";
+import { getDisplaySizePhysical } from "./displayMetrics";
 import { createWindow as createStreamWindow } from "./windows/streamWindow";
 import { createWindow as createCropperWindow } from "./windows/cropperWindow";
 import { createWindow as createFrameWindow } from "./windows/frameWindow";
@@ -79,11 +76,10 @@ function initEvents() {
             width: boundsDipLocal.width,
             height: boundsDipLocal.height,
           };
-          // Retina / HiDPI: selection is DIP, but capture cropping is physical pixels.
-          const boundsPhysicalLocal = toPhysicalLocalRect(
-            boundsDipLocal,
-            targetDisplay
-          );
+          const displaySizeDip = {
+            width: targetDisplay.bounds.width,
+            height: targetDisplay.bounds.height,
+          };
           const displaySizePhysical = getDisplaySizePhysical(targetDisplay);
 
           frameWindow = createFrameWindow({
@@ -95,7 +91,7 @@ function initEvents() {
           streamWindow = createStreamWindow({
             displayId: Number(displayId),
             boundsDip: boundsDipLocal,
-            boundsPhysical: boundsPhysicalLocal,
+            displaySizeDip,
             displaySizePhysical,
           });
         }

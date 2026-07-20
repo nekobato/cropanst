@@ -15,6 +15,7 @@
   "private": true,
   "scripts": {
     "postinstall": "rm -rf node_modules/electron/dist && node node_modules/electron/install.js",
+    "test": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --test \"src/**/*.test.ts\"",
     "dev": "electron-vite dev",
     "build:mac": "electron-vite build && electron-builder -m -c electron-builder.config.cjs",
     "build:win": "electron-vite build && electron-builder -w -c electron-builder.config.cjs",

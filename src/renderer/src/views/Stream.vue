@@ -1,76 +1,202 @@
 <script lang="ts" setup>
-import { ref } from "vue";
+/**
+ * @file Live preview for a display-local selection captured from the desktop.
+ */
+
+import { onUnmounted, ref, useTemplateRef } from "vue";
 import { Icon } from "@iconify/vue";
 import { log } from "electron-log";
+import {
+  mapDipRectToFrame,
+  type Rect,
+  type Size,
+} from "@/utils/captureGeometry";
+
+type CaptureWindowData = {
+  displayId: number;
+  boundsDip: Rect;
+  displaySizeDip: Size;
+  displaySizePhysical: Size;
+};
 
 const isFocused = ref(false);
 
-const video = ref<HTMLVideoElement | null>(null);
-const canvas = ref<HTMLCanvasElement | null>(null);
-const ctx = ref<CanvasRenderingContext2D>();
+const video = useTemplateRef<HTMLVideoElement>("video");
+const canvas = useTemplateRef<HTMLCanvasElement>("canvas");
 
-const displaySizePhysical = ref({
-  width: 0,
-  height: 0,
-});
-
-const boundsPhysical = ref({
-  x: 0,
-  y: 0,
-  width: 0,
-  height: 0,
-});
+let context: CanvasRenderingContext2D | null = null;
+let boundsFrame: Rect | null = null;
+let animationFrameId: number | null = null;
+let captureStream: MediaStream | null = null;
+let captureRequestId = 0;
 
 /**
- * Draw the selected physical-pixel region into the canvas.
+ * Wait until a video element exposes its intrinsic frame dimensions.
  */
-function drawImage() {
-  if (video.value && canvas.value && ctx.value) {
-    ctx.value.drawImage(
-      video.value,
-      boundsPhysical.value.x,
-      boundsPhysical.value.y,
-      boundsPhysical.value.width,
-      boundsPhysical.value.height,
-      0,
-      0,
-      canvas.value.width,
-      canvas.value.height
-    );
+const waitForLoadedMetadata = (
+  videoElement: HTMLVideoElement
+): Promise<void> => {
+  if (videoElement.readyState >= HTMLMediaElement.HAVE_METADATA) {
+    return Promise.resolve();
   }
-}
+
+  return new Promise((resolve, reject) => {
+    /** Resolve the pending metadata wait. */
+    const handleLoadedMetadata = (): void => {
+      videoElement.removeEventListener("error", handleError);
+      resolve();
+    };
+
+    /** Reject the pending metadata wait with the media error. */
+    const handleError = (): void => {
+      videoElement.removeEventListener("loadedmetadata", handleLoadedMetadata);
+      reject(
+        videoElement.error ?? new Error("Failed to load capture metadata")
+      );
+    };
+
+    videoElement.addEventListener("loadedmetadata", handleLoadedMetadata, {
+      once: true,
+    });
+    videoElement.addEventListener("error", handleError, { once: true });
+  });
+};
+
+/**
+ * Draw the selected capture-frame region into the canvas.
+ */
+const drawImage = (): void => {
+  if (!video.value || !canvas.value || !context || !boundsFrame) {
+    return;
+  }
+
+  context.drawImage(
+    video.value,
+    boundsFrame.x,
+    boundsFrame.y,
+    boundsFrame.width,
+    boundsFrame.height,
+    0,
+    0,
+    canvas.value.width,
+    canvas.value.height
+  );
+};
+
+/**
+ * Draw continuously while the preview window is active.
+ */
+const renderFrame = (): void => {
+  drawImage();
+  animationFrameId = window.requestAnimationFrame(renderFrame);
+};
+
+/**
+ * Stop the active canvas rendering loop.
+ */
+const stopRendering = (): void => {
+  if (animationFrameId === null) {
+    return;
+  }
+
+  window.cancelAnimationFrame(animationFrameId);
+  animationFrameId = null;
+};
+
+/**
+ * Stop the current media stream and clear renderer-owned capture state.
+ */
+const stopCapture = (): void => {
+  stopRendering();
+  captureStream?.getTracks().forEach((track) => track.stop());
+  captureStream = null;
+  context = null;
+  boundsFrame = null;
+
+  if (video.value) {
+    video.value.pause();
+    video.value.srcObject = null;
+  }
+};
+
+/**
+ * Request a desktop stream and map the DIP selection to its actual frame size.
+ */
+const startCapture = async (data: CaptureWindowData): Promise<void> => {
+  const requestId = ++captureRequestId;
+  stopCapture();
+
+  try {
+    const stream = await navigator.mediaDevices.getDisplayMedia({
+      audio: false,
+      video: {
+        width: data.displaySizePhysical.width,
+        height: data.displaySizePhysical.height,
+        frameRate: 30,
+      },
+    });
+
+    if (requestId !== captureRequestId) {
+      stream.getTracks().forEach((track) => track.stop());
+      return;
+    }
+
+    const videoElement = video.value;
+    const canvasElement = canvas.value;
+    if (!videoElement || !canvasElement) {
+      stream.getTracks().forEach((track) => track.stop());
+      throw new Error("Capture elements are unavailable");
+    }
+
+    captureStream = stream;
+    videoElement.srcObject = stream;
+    await waitForLoadedMetadata(videoElement);
+
+    if (requestId !== captureRequestId) {
+      return;
+    }
+
+    boundsFrame = mapDipRectToFrame(data.boundsDip, data.displaySizeDip, {
+      width: videoElement.videoWidth,
+      height: videoElement.videoHeight,
+    });
+    canvasElement.width = boundsFrame.width;
+    canvasElement.height = boundsFrame.height;
+    context = canvasElement.getContext("2d");
+    if (!context) {
+      throw new Error("Canvas 2D context is unavailable");
+    }
+
+    await videoElement.play();
+    if (requestId === captureRequestId) {
+      renderFrame();
+    }
+  } catch (error) {
+    if (requestId === captureRequestId) {
+      stopCapture();
+    }
+    throw error;
+  }
+};
+
+/**
+ * Invalidate pending capture requests and release all media resources.
+ */
+const disposeCapture = (): void => {
+  captureRequestId += 1;
+  stopCapture();
+};
 
 /**
  * Request the main process to close the app.
  */
-function closeWindow() {
+const closeWindow = (): void => {
+  disposeCapture();
   window.ipc.send("exit");
-}
+};
 
-window.ipc.on("cropper:capture", (_, data) => {
-  // Retina / HiDPI: use physical metrics for getDisplayMedia and drawImage cropping.
-  displaySizePhysical.value = data.displaySizePhysical;
-  boundsPhysical.value = data.boundsPhysical;
-  navigator.mediaDevices
-    .getDisplayMedia({
-      audio: false,
-      video: {
-        width: displaySizePhysical.value.width,
-        height: displaySizePhysical.value.height,
-        frameRate: 30,
-      },
-    })
-    .then((stream) => {
-      if (video.value && canvas.value) {
-        ctx.value = canvas.value.getContext("2d")!;
-        video.value.srcObject = stream;
-        video.value.onloadedmetadata = (e) => {
-          video.value?.play();
-          setInterval(() => drawImage(), 1000 / 30);
-        };
-      }
-    })
-    .catch((e) => log(e));
+window.ipc.on("cropper:capture", (_, data: CaptureWindowData) => {
+  void startCapture(data).catch((error) => log(error));
 });
 
 window.ipc.on("focus", () => {
@@ -80,22 +206,12 @@ window.ipc.on("focus", () => {
 window.ipc.on("blur", () => {
   isFocused.value = false;
 });
+
+onUnmounted(disposeCapture);
 </script>
 <template>
-  <video
-    ref="video"
-    class="video"
-    autoplay
-    playsinline
-    :width="displaySizePhysical.width"
-    :height="displaySizePhysical.height"
-  ></video>
-  <canvas
-    ref="canvas"
-    class="canvas"
-    :width="boundsPhysical.width"
-    :height="boundsPhysical.height"
-  ></canvas>
+  <video ref="video" class="video" autoplay playsinline></video>
+  <canvas ref="canvas" class="canvas"></canvas>
   <button
     @click="closeWindow"
     class="close-button"
