@@ -11,7 +11,7 @@
     "type": "git",
     "url": "https://github.com/nekobato/cropanst"
   },
-  "version": "0.0.5",
+  "version": "0.0.6",
   "private": true,
   "scripts": {
     "postinstall": "rm -rf node_modules/electron/dist && node node_modules/electron/install.js",
@@ -51,7 +51,6 @@
   },
   "pnpm": {
     "overrides": {
-      "app-builder-lib": "26.4.0",
       "dmg-builder": "26.15.3",
       "electron-builder-squirrel-windows": "26.15.3"
     },
