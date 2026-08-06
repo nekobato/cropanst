@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, ref } from "vue";
+import { computed, onBeforeUnmount, onMounted, ref } from "vue";
 import { useRoute } from "vue-router";
 
 const route = useRoute();
@@ -14,23 +14,29 @@ const overlay = ref(
     } | null
   >null
 );
-const svgStyle = computed(() => {
-  return {
-    width: `${window.innerWidth}px`,
-    height: `${window.innerHeight}px`,
-  };
+const viewport = ref({
+  width: window.innerWidth,
+  height: window.innerHeight,
 });
 
 const viewBox = computed(() => {
-  // fill display area
-  return `0 0 ${window.innerWidth} ${window.innerHeight}`;
+  return `0 0 ${viewport.value.width} ${viewport.value.height}`;
 });
 
 const pathD = computed(() => {
+  const { width, height } = viewport.value;
+
   return overlay.value
-    ? `M0,0 v${window.innerHeight} h${window.innerWidth} v${-window.innerHeight} z M${overlay.value.x},${overlay.value.y} h${overlay.value.width} v${overlay.value.height} h${-overlay.value.width} z`
-    : `M0,0 v${window.innerHeight} h${window.innerWidth} v${-window.innerHeight} z`;
+    ? `M0,0 v${height} h${width} v${-height} z M${overlay.value.x},${overlay.value.y} h${overlay.value.width} v${overlay.value.height} h${-overlay.value.width} z`
+    : `M0,0 v${height} h${width} v${-height} z`;
 });
+
+const updateViewport = () => {
+  viewport.value = {
+    width: window.innerWidth,
+    height: window.innerHeight,
+  };
+};
 
 const onMouseDown = (event: MouseEvent) => {
   overlay.value = {
@@ -75,10 +81,21 @@ const onMouseUp = () => {
   });
 };
 
-window.addEventListener("keydown", (event) => {
+const onKeyDown = (event: KeyboardEvent) => {
   if (event.key === "Escape") {
     window.ipc.send("exit");
   }
+};
+
+onMounted(() => {
+  updateViewport();
+  window.addEventListener("resize", updateViewport);
+  window.addEventListener("keydown", onKeyDown);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener("resize", updateViewport);
+  window.removeEventListener("keydown", onKeyDown);
 });
 </script>
 
@@ -89,11 +106,7 @@ window.addEventListener("keydown", (event) => {
     @mousemove="onMouseMove"
     @mouseup="onMouseUp"
   >
-    <svg
-      :style="svgStyle"
-      :view-box="viewBox"
-      xmlns="http://www.w3.org/2000/svg"
-    >
+    <svg class="overlay" :viewBox="viewBox" xmlns="http://www.w3.org/2000/svg">
       <path fill="rgba(0, 0, 0, 0.5)" :d="pathD" fill-rule="evenodd"></path>
     </svg>
   </div>
@@ -101,8 +114,14 @@ window.addEventListener("keydown", (event) => {
 
 <style lang="scss" scoped>
 .cropper {
+  position: fixed;
+  inset: 0;
+  cursor: crosshair;
+}
+
+.overlay {
+  display: block;
   width: 100%;
   height: 100%;
-  cursor: crosshair;
 }
 </style>

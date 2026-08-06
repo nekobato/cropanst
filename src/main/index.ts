@@ -6,7 +6,6 @@ import {
   screen,
   session,
   desktopCapturer,
-  systemPreferences,
 } from "electron";
 import log from "electron-log";
 import { checkUpdate } from "./autoupdater";
@@ -31,8 +30,6 @@ let cropperWindows = new Map<number, BrowserWindow>();
 let isCropperActive = false;
 let frameWindow: BrowserWindow | null;
 let streamWindow: BrowserWindow | null;
-
-checkUpdate();
 
 function initMenu() {
   const template: Electron.MenuItemConstructorOptions[] = [
@@ -244,15 +241,21 @@ app.on("before-quit", () => {
   frameWindow = null;
 });
 
-app.on("ready", async () => {
-  if (process.platform === "darwin") {
-    await systemPreferences.askForMediaAccess("camera");
-  }
+const initializeApplication = () => {
   initMenu();
   initEvents();
   initDisplayEvents();
   startCropperWindows();
-});
+  checkUpdate();
+};
+
+void app
+  .whenReady()
+  .then(initializeApplication)
+  .catch((error: unknown) => {
+    log.error("Failed to initialize application", error);
+    app.quit();
+  });
 
 if (isDevelopment) {
   if (process.platform === "win32") {

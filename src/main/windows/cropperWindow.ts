@@ -4,6 +4,10 @@ import { isDevelopment, pageRoot, preload } from "../static";
 export const createWindow = (display: Electron.Display) => {
   const win = new BrowserWindow({
     title: "Cropping...",
+    x: display.bounds.x,
+    y: display.bounds.y,
+    width: display.bounds.width,
+    height: display.bounds.height,
     resizable: false,
     movable: false,
     minimizable: false,
@@ -32,13 +36,6 @@ export const createWindow = (display: Electron.Display) => {
   } else {
     win.loadFile(pageRoot, { hash: `/cropper/${display.id}` });
   }
-
-  win.setBounds({
-    x: display.bounds.x,
-    y: display.bounds.y,
-    width: display.bounds.width,
-    height: display.bounds.height,
-  });
 
   win.webContents.on("did-finish-load", () => {
     win.show();
