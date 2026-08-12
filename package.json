@@ -42,12 +42,12 @@
     "prettier": "3.9.6",
     "sass": "1.102.0",
     "typescript": "7.0.2",
-    "vite": "8.1.5",
+    "vite": "8.2.0",
     "vite-plugin-electron": "1.1.0",
     "vite-plugin-electron-renderer": "1.0.0",
     "vue": "3.5.40",
     "vue-router": "5.2.0",
-    "vue-tsc": "3.3.8"
+    "vue-tsc": "3.3.9"
   },
   "pnpm": {
     "overrides": {
