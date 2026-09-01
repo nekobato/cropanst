@@ -25,8 +25,8 @@
   "devDependencies": {
     "@iconify/vue": "5.0.1",
     "bowser": "2.14.1",
-    "element-plus": "2.14.4",
-    "sass-embedded": "1.100.0",
+    "element-plus": "2.14.5",
+    "sass-embedded": "1.103.1",
     "vitepress": "1.6.4",
     "vue": "3.5.41"
   }
