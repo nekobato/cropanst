@@ -11,7 +11,7 @@
     "type": "git",
     "url": "https://github.com/nekobato/cropanst"
   },
-  "version": "0.0.6",
+  "version": "0.0.7",
   "private": true,
   "scripts": {
     "postinstall": "rm -rf node_modules/electron/dist && node node_modules/electron/install.js",
@@ -48,18 +48,5 @@
     "vue": "3.5.41",
     "vue-router": "5.2.0",
     "vue-tsc": "3.3.11"
-  },
-  "pnpm": {
-    "overrides": {
-      "dmg-builder": "26.15.3",
-      "electron-builder-squirrel-windows": "26.15.3"
-    },
-    "ignoredBuiltDependencies": [
-      "@parcel/watcher"
-    ],
-    "onlyBuiltDependencies": [
-      "electron",
-      "electron-winstaller"
-    ]
   }
 }

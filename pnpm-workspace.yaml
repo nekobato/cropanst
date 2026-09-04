@@ -1,0 +1,10 @@
+overrides:
+  dmg-builder: 26.15.3
+  electron-builder-squirrel-windows: 26.15.3
+
+allowBuilds:
+  "@parcel/watcher": false
+  electron: true
+  electron-winstaller: true
+  esbuild: true
+  phantomjs-prebuilt: false
