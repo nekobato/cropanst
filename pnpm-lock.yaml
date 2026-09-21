@@ -23,13 +23,13 @@ importers:
         version: 3.4.2(prettier@3.9.6)
       '@vitejs/plugin-vue':
         specifier: 6.0.8
-        version: 6.0.8(vite@8.2.2(@types/node@26.2.0)(esbuild@0.27.7)(jiti@2.7.0)(sass@1.103.1)(yaml@2.9.0))(vue@3.5.42(typescript@7.0.2))
+        version: 6.0.8(vite@8.3.0(@types/node@26.2.0)(esbuild@0.27.7)(jiti@2.7.0)(sass@1.104.1)(yaml@2.9.0))(vue@3.5.42(typescript@7.0.2))
       dmg-builder:
         specifier: 26.15.3
         version: 26.15.3(electron-builder-squirrel-windows@26.15.3)(supports-color@7.2.0)
       electron:
-        specifier: 44.0.0
-        version: 44.0.0(supports-color@7.2.0)
+        specifier: 44.3.0
+        version: 44.3.0(supports-color@7.2.0)
       electron-builder:
         specifier: 26.15.3
         version: 26.15.3(electron-builder-squirrel-windows@26.15.3)(supports-color@7.2.0)
@@ -47,7 +47,7 @@ importers:
         version: 6.8.9(supports-color@7.2.0)
       electron-vite:
         specifier: 5.0.0
-        version: 5.0.0(supports-color@7.2.0)(vite@8.2.2(@types/node@26.2.0)(esbuild@0.27.7)(jiti@2.7.0)(sass@1.103.1)(yaml@2.9.0))
+        version: 5.0.0(supports-color@7.2.0)(vite@8.3.0(@types/node@26.2.0)(esbuild@0.27.7)(jiti@2.7.0)(sass@1.104.1)(yaml@2.9.0))
       element-plus:
         specifier: 2.14.5
         version: 2.14.5(vue@3.5.42(typescript@7.0.2))
@@ -55,17 +55,17 @@ importers:
         specifier: 3.9.6
         version: 3.9.6
       sass:
-        specifier: 1.103.1
-        version: 1.103.1
+        specifier: 1.104.1
+        version: 1.104.1
       typescript:
         specifier: 7.0.2
         version: 7.0.2
       vite:
-        specifier: 8.2.2
-        version: 8.2.2(@types/node@26.2.0)(esbuild@0.27.7)(jiti@2.7.0)(sass@1.103.1)(yaml@2.9.0)
+        specifier: 8.3.0
+        version: 8.3.0(@types/node@26.2.0)(esbuild@0.27.7)(jiti@2.7.0)(sass@1.104.1)(yaml@2.9.0)
       vite-plugin-electron:
-        specifier: 1.1.1
-        version: 1.1.1(vite-plugin-electron-renderer@1.0.0)
+        specifier: 1.1.2
+        version: 1.1.2(vite-plugin-electron-renderer@1.0.0)(vite@8.3.0(@types/node@26.2.0)(esbuild@0.27.7)(jiti@2.7.0)(sass@1.104.1)(yaml@2.9.0))
       vite-plugin-electron-renderer:
         specifier: 1.0.0
         version: 1.0.0
@@ -73,8 +73,8 @@ importers:
         specifier: 3.5.42
         version: 3.5.42(typescript@7.0.2)
       vue-router:
-        specifier: 5.3.0
-        version: 5.3.0(@vue/compiler-sfc@3.5.42)(esbuild@0.27.7)(rolldown@1.2.6)(vite@8.2.2(@types/node@26.2.0)(esbuild@0.27.7)(jiti@2.7.0)(sass@1.103.1)(yaml@2.9.0))(vue@3.5.42(typescript@7.0.2))
+        specifier: 5.3.1
+        version: 5.3.1(@vue/compiler-sfc@3.5.42)(esbuild@0.27.7)(rolldown@1.2.6)(vite@8.3.0(@types/node@26.2.0)(esbuild@0.27.7)(jiti@2.7.0)(sass@1.104.1)(yaml@2.9.0))(vue@3.5.42(typescript@7.0.2))
       vue-tsc:
         specifier: 3.3.11
         version: 3.3.11(typescript@7.0.2)
@@ -1169,6 +1169,11 @@ packages:
 
   '@volar/typescript@2.4.28':
     resolution: {integrity: sha512-Ja6yvWrbis2QtN4ClAKreeUZPVYMARDYZl9LMEv1iQ1QdepB6wn0jTRxA9MftYmYa4DQ4k/DaSZpFPUfxl8giw==}
+    peerDependencies:
+      typescript: '*'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
 
   '@vue-macros/common@3.1.4':
     resolution: {integrity: sha512-/5Fv+6DgIcM9ajY05ZmKBv+LMX1M9A0X+IUwDRVdt67ciw8OV9bvG2r34p3RiEadlsQybjhKPRKNXDC8Bp23cw==}
@@ -1713,8 +1718,8 @@ packages:
     resolution: {integrity: sha512-bO3y10YikuUwUuDUQRM4KfwNkKhnpVO7IPdbsrejwN9/AABJzzTQ4GeHwyzNSrVO+tEH3/Np255a3sVZpZDjvg==}
     engines: {node: '>=8.0.0'}
 
-  electron@44.0.0:
-    resolution: {integrity: sha512-FkTqPrFPZYljdPI5b7KORGsJTd6FgUQDefl5MrU3Xz9R87pAj9JLreIjDqcRN8hJIkFHIou0o8kKzvcpT9qiRQ==}
+  electron@44.3.0:
+    resolution: {integrity: sha512-St9EV7F2VtYaYWD2qaAjBwUgKxx39eJOUsUJ5+/1113sqbVfNqv4Dbm/W1rN7qmYSPa+mWwR6yr+b7MfgjgVfQ==}
     engines: {node: '>= 22.12.0'}
     hasBin: true
 
@@ -2678,8 +2683,8 @@ packages:
     resolution: {integrity: sha512-TRzzuFRRmEoSW/p1KVAmiOgPco2Irlah+bGFCeNfJXxxYGwSw7YwAOAcd7X28K/m5bjBWKsC29KyoMfHbypayg==}
     engines: {node: '>=12.13.0'}
 
-  postcss@8.5.26:
-    resolution: {integrity: sha512-u82N74LFzG8ca+dD8puPnplTXoGH4fTPpVGuIbt36G3qvNlkvfD0lEAZSxaly3KX8TS/L1A1gsCEmvKmBcVbkQ==}
+  postcss@8.5.28:
+    resolution: {integrity: sha512-RRuzqDtt5Y9h3quz5hWhK+TPnsmVs6WwSU6LkJMeY4HstUEDuYTG8UJSdawMRzmzAtV+KEoG8N3Qg2qLy5vM/A==}
     engines: {node: ^10 || ^12 || >=14}
 
   postject@1.0.0-alpha.6:
@@ -2858,8 +2863,8 @@ packages:
   sanitize-filename@1.6.4:
     resolution: {integrity: sha512-9ZyI08PsvdQl2r/bBIGubpVdR3RR9sY6RDiWFPreA21C/EFlQhmgo20UZlNjZMMZNubusLhAQozkA0Od5J21Eg==}
 
-  sass@1.103.1:
-    resolution: {integrity: sha512-9icZURbP51S6S0QGoyaeqk9uB06GNWxsFYWfH5RgpFgqK5FA8tJcM3AdVxrZEVJ7dz+L87nG95gBKf4VuaMHGw==}
+  sass@1.104.1:
+    resolution: {integrity: sha512-yDA+1aIG3EHgN4V/BvuhCvu61FF6hEd4e+9DxikUm9U0CAGuvdIZ/UYy7qbOxjhbbWQraoyLlMuzdRGOSV5Bmw==}
     engines: {node: '>=20.19.0'}
     hasBin: true
 
@@ -3183,21 +3188,22 @@ packages:
   vite-plugin-electron-renderer@1.0.0:
     resolution: {integrity: sha512-/9CBdUqnCgwWXn61v5PErWnR5q3Bfne2oI52uHzgJnKnlaoNgEKvxOzS0/XssDXWMK3ElStM2+J/Ko4Q63XhMA==}
 
-  vite-plugin-electron@1.1.1:
-    resolution: {integrity: sha512-qvfiA20hQiQydIzPIhMgH9ZmqPHh7uVGfI76pK8TVOIYJyhaqpsHrMNwa7OmKpUXYFffXwOIZ4zL0Vprb4KP8Q==}
+  vite-plugin-electron@1.1.2:
+    resolution: {integrity: sha512-EAHs3zhK+33FhdasevCRVMMOFIHT+MDg5EcD47CCwxDcJ1REYqb7EeR0RHOjCKS7P2ip/q1ISzzMpK3H+p8uTA==}
     peerDependencies:
+      vite: '>=6'
       vite-plugin-electron-renderer: '*'
     peerDependenciesMeta:
       vite-plugin-electron-renderer:
         optional: true
 
-  vite@8.2.2:
-    resolution: {integrity: sha512-cFKLV/PRgAUlIRm5WjMjJ86jrftzpqcgH+Us+DS8mI3CDNiH30Whrz8uHL3+MOLPAgqbMBAqWdAHAphOAM+z/Q==}
+  vite@8.3.0:
+    resolution: {integrity: sha512-lhZBVvEHefgE+HQZC9O7EBJgCU/nVzFNl7vkS4RE0APtWLP02/8QVIkQtzBxPquh7lq5/78NHipTj7ODQ6XuyQ==}
     engines: {node: ^20.19.0 || >=22.12.0}
     hasBin: true
     peerDependencies:
       '@types/node': ^20.19.0 || >=22.12.0
-      '@vitejs/devtools': ^0.4.0 || ^0.5.0
+      '@vitejs/devtools': ^0.7.1
       esbuild: ^0.27.0 || ^0.28.0
       jiti: '>=1.21.0'
       less: ^4.0.0
@@ -3240,8 +3246,8 @@ packages:
   vue-component-type-helpers@3.3.11:
     resolution: {integrity: sha512-LwcxzeliO9fkQcpJG0PoX8X5kmAhKmH9wkpDLxNabwzkQ9Zeib2YVHwFV4pcWmMLfXVfjr/dSV+DaJ3cIPgSNA==}
 
-  vue-router@5.3.0:
-    resolution: {integrity: sha512-a2PBXX9yfkS58JzSJALUffgDa09lEzKmCcEnLaepoIr88L+9hEnsgEQkcadJGID+vtHa0gFpVo064zmylA9fcg==}
+  vue-router@5.3.1:
+    resolution: {integrity: sha512-GDBZzgmILxA/kFnkFbJjQZdZ2QQbngnIMMuoUcjhZIfH1RGMaPjPwX5ASnV38qamuA9uhO0RDjSBHTDNG2uXyQ==}
     peerDependencies:
       '@pinia/colada': '>=0.21.2'
       '@vue/compiler-sfc': ^3.5.34 || ^4.0.0
@@ -4330,10 +4336,10 @@ snapshots:
   '@typescript/typescript-win32-x64@7.0.2':
     optional: true
 
-  '@vitejs/plugin-vue@6.0.8(vite@8.2.2(@types/node@26.2.0)(esbuild@0.27.7)(jiti@2.7.0)(sass@1.103.1)(yaml@2.9.0))(vue@3.5.42(typescript@7.0.2))':
+  '@vitejs/plugin-vue@6.0.8(vite@8.3.0(@types/node@26.2.0)(esbuild@0.27.7)(jiti@2.7.0)(sass@1.104.1)(yaml@2.9.0))(vue@3.5.42(typescript@7.0.2))':
     dependencies:
       '@rolldown/pluginutils': 1.0.1
-      vite: 8.2.2(@types/node@26.2.0)(esbuild@0.27.7)(jiti@2.7.0)(sass@1.103.1)(yaml@2.9.0)
+      vite: 8.3.0(@types/node@26.2.0)(esbuild@0.27.7)(jiti@2.7.0)(sass@1.104.1)(yaml@2.9.0)
       vue: 3.5.42(typescript@7.0.2)
 
   '@volar/language-core@2.4.28':
@@ -4342,11 +4348,13 @@ snapshots:
 
   '@volar/source-map@2.4.28': {}
 
-  '@volar/typescript@2.4.28':
+  '@volar/typescript@2.4.28(typescript@7.0.2)':
     dependencies:
       '@volar/language-core': 2.4.28
       path-browserify: 1.0.1
       vscode-uri: 3.2.0
+    optionalDependencies:
+      typescript: 7.0.2
 
   '@vue-macros/common@3.1.4(vue@3.5.42(typescript@7.0.2))':
     dependencies:
@@ -4380,7 +4388,7 @@ snapshots:
       '@vue/shared': 3.5.42
       estree-walker: 2.0.2
       magic-string: 0.30.21
-      postcss: 8.5.26
+      postcss: 8.5.28
       source-map-js: 1.2.1
 
   '@vue/compiler-ssr@3.5.42':
@@ -4991,7 +4999,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  electron-vite@5.0.0(supports-color@7.2.0)(vite@8.2.2(@types/node@26.2.0)(esbuild@0.27.7)(jiti@2.7.0)(sass@1.103.1)(yaml@2.9.0)):
+  electron-vite@5.0.0(supports-color@7.2.0)(vite@8.3.0(@types/node@26.2.0)(esbuild@0.27.7)(jiti@2.7.0)(sass@1.104.1)(yaml@2.9.0)):
     dependencies:
       '@babel/core': 7.29.0(supports-color@7.2.0)
       '@babel/plugin-transform-arrow-functions': 7.27.1(@babel/core@7.29.0(supports-color@7.2.0))
@@ -4999,7 +5007,7 @@ snapshots:
       esbuild: 0.25.12
       magic-string: 0.30.21
       picocolors: 1.1.1
-      vite: 8.2.2(@types/node@26.2.0)(esbuild@0.27.7)(jiti@2.7.0)(sass@1.103.1)(yaml@2.9.0)
+      vite: 8.3.0(@types/node@26.2.0)(esbuild@0.27.7)(jiti@2.7.0)(sass@1.104.1)(yaml@2.9.0)
     transitivePeerDependencies:
       - supports-color
 
@@ -5015,7 +5023,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  electron@44.0.0(supports-color@7.2.0):
+  electron@44.3.0(supports-color@7.2.0):
     dependencies:
       '@electron-internal/extract-zip': 1.0.5
       '@electron/get': 5.1.0(supports-color@7.2.0)
@@ -6000,7 +6008,7 @@ snapshots:
 
   pngjs@6.0.0: {}
 
-  postcss@8.5.26:
+  postcss@8.5.28:
     dependencies:
       nanoid: 3.3.18
       picocolors: 1.1.1
@@ -6211,7 +6219,7 @@ snapshots:
     dependencies:
       truncate-utf8-bytes: 1.0.2
 
-  sass@1.103.1:
+  sass@1.104.1:
     dependencies:
       chokidar: 5.0.0
       immutable: 5.1.9
@@ -6474,7 +6482,7 @@ snapshots:
       pathe: 2.0.3
       picomatch: 4.0.7
 
-  unplugin@3.3.0(esbuild@0.27.7)(rolldown@1.2.6)(vite@8.2.2(@types/node@26.2.0)(esbuild@0.27.7)(jiti@2.7.0)(sass@1.103.1)(yaml@2.9.0)):
+  unplugin@3.3.0(esbuild@0.27.7)(rolldown@1.2.6)(vite@8.3.0(@types/node@26.2.0)(esbuild@0.27.7)(jiti@2.7.0)(sass@1.104.1)(yaml@2.9.0)):
     dependencies:
       '@jridgewell/remapping': 2.3.5
       picomatch: 4.0.7
@@ -6482,7 +6490,7 @@ snapshots:
     optionalDependencies:
       esbuild: 0.27.7
       rolldown: 1.2.6
-      vite: 8.2.2(@types/node@26.2.0)(esbuild@0.27.7)(jiti@2.7.0)(sass@1.103.1)(yaml@2.9.0)
+      vite: 8.3.0(@types/node@26.2.0)(esbuild@0.27.7)(jiti@2.7.0)(sass@1.104.1)(yaml@2.9.0)
 
   unzipper@0.12.5:
     dependencies:
@@ -6527,17 +6535,18 @@ snapshots:
 
   vite-plugin-electron-renderer@1.0.0: {}
 
-  vite-plugin-electron@1.1.1(vite-plugin-electron-renderer@1.0.0):
+  vite-plugin-electron@1.1.2(vite-plugin-electron-renderer@1.0.0)(vite@8.3.0(@types/node@26.2.0)(esbuild@0.27.7)(jiti@2.7.0)(sass@1.104.1)(yaml@2.9.0)):
     dependencies:
       local-pkg: 1.2.1
+      vite: 8.3.0(@types/node@26.2.0)(esbuild@0.27.7)(jiti@2.7.0)(sass@1.104.1)(yaml@2.9.0)
     optionalDependencies:
       vite-plugin-electron-renderer: 1.0.0
 
-  vite@8.2.2(@types/node@26.2.0)(esbuild@0.27.7)(jiti@2.7.0)(sass@1.103.1)(yaml@2.9.0):
+  vite@8.3.0(@types/node@26.2.0)(esbuild@0.27.7)(jiti@2.7.0)(sass@1.104.1)(yaml@2.9.0):
     dependencies:
       lightningcss: 1.33.0
       picomatch: 4.0.7
-      postcss: 8.5.26
+      postcss: 8.5.28
       rolldown: 1.2.6
       tinyglobby: 0.2.17
     optionalDependencies:
@@ -6545,14 +6554,14 @@ snapshots:
       esbuild: 0.27.7
       fsevents: 2.3.3
       jiti: 2.7.0
-      sass: 1.103.1
+      sass: 1.104.1
       yaml: 2.9.0
 
   vscode-uri@3.2.0: {}
 
   vue-component-type-helpers@3.3.11: {}
 
-  vue-router@5.3.0(@vue/compiler-sfc@3.5.42)(esbuild@0.27.7)(rolldown@1.2.6)(vite@8.2.2(@types/node@26.2.0)(esbuild@0.27.7)(jiti@2.7.0)(sass@1.103.1)(yaml@2.9.0))(vue@3.5.42(typescript@7.0.2)):
+  vue-router@5.3.1(@vue/compiler-sfc@3.5.42)(esbuild@0.27.7)(rolldown@1.2.6)(vite@8.3.0(@types/node@26.2.0)(esbuild@0.27.7)(jiti@2.7.0)(sass@1.104.1)(yaml@2.9.0))(vue@3.5.42(typescript@7.0.2)):
     dependencies:
       '@vue-macros/common': 3.1.4(vue@3.5.42(typescript@7.0.2))
       '@vue/devtools-api': 8.2.1
@@ -6568,12 +6577,12 @@ snapshots:
       picomatch: 4.0.7
       scule: 1.3.0
       tinyglobby: 0.2.17
-      unplugin: 3.3.0(esbuild@0.27.7)(rolldown@1.2.6)(vite@8.2.2(@types/node@26.2.0)(esbuild@0.27.7)(jiti@2.7.0)(sass@1.103.1)(yaml@2.9.0))
+      unplugin: 3.3.0(esbuild@0.27.7)(rolldown@1.2.6)(vite@8.3.0(@types/node@26.2.0)(esbuild@0.27.7)(jiti@2.7.0)(sass@1.104.1)(yaml@2.9.0))
       unplugin-utils: 0.3.2
       vue: 3.5.42(typescript@7.0.2)
     optionalDependencies:
       '@vue/compiler-sfc': 3.5.42
-      vite: 8.2.2(@types/node@26.2.0)(esbuild@0.27.7)(jiti@2.7.0)(sass@1.103.1)(yaml@2.9.0)
+      vite: 8.3.0(@types/node@26.2.0)(esbuild@0.27.7)(jiti@2.7.0)(sass@1.104.1)(yaml@2.9.0)
     transitivePeerDependencies:
       - '@farmfe/core'
       - '@rspack/core'
@@ -6586,7 +6595,7 @@ snapshots:
 
   vue-tsc@3.3.11(typescript@7.0.2):
     dependencies:
-      '@volar/typescript': 2.4.28
+      '@volar/typescript': 2.4.28(typescript@7.0.2)
       '@vue/language-core': 3.3.11
       typescript: 7.0.2
 
