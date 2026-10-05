@@ -23,10 +23,10 @@
   "keywords": [],
   "license": "MIT",
   "devDependencies": {
-    "@iconify/vue": "5.0.2",
+    "@iconify/vue": "5.0.3",
     "bowser": "2.14.1",
     "element-plus": "2.14.6",
-    "sass-embedded": "1.104.1",
+    "sass-embedded": "1.105.0",
     "vitepress": "1.6.4",
     "vue": "3.5.43"
   }
