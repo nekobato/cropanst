@@ -41,7 +41,7 @@
     "element-plus": "2.14.6",
     "prettier": "3.9.9",
     "sass": "1.105.0",
-    "typescript": "7.0.2",
+    "typescript": "6.0.3",
     "vite": "8.3.1",
     "vite-plugin-electron": "1.1.2",
     "vite-plugin-electron-renderer": "1.0.0",
