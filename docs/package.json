@@ -25,9 +25,15 @@
   "devDependencies": {
     "@iconify/vue": "5.0.3",
     "bowser": "2.14.1",
-    "element-plus": "2.14.6",
-    "sass-embedded": "1.105.0",
+    "element-plus": "2.14.7",
+    "sass-embedded": "1.105.1",
     "vitepress": "1.6.4",
     "vue": "3.5.43"
+  },
+  "pnpm": {
+    "overrides": {
+      "source-map-js@>=1.0.0 <1.2.2": "1.2.2",
+      "esbuild@>=0.21.0 <0.28.1": "0.25.12"
+    }
   }
 }
