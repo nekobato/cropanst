@@ -41,12 +41,13 @@
     "element-plus": "2.14.7",
     "prettier": "3.9.9",
     "sass": "1.105.1",
-    "typescript": "7.0.2",
-    "vite": "8.3.2",
+    "typescript": "6.0.3",
+    "vite": "7.3.7",
     "vite-plugin-electron": "1.1.2",
     "vite-plugin-electron-renderer": "1.0.0",
     "vue": "3.5.43",
     "vue-router": "5.3.1",
     "vue-tsc": "3.3.12"
-  }
+  },
+  "packageManager": "pnpm@10.33.0"
 }
