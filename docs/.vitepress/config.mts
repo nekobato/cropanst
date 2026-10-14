@@ -27,6 +27,26 @@ export default defineConfigWithTheme<ThemeConfig>({
   base: "/cropanst/",
   assetsDir: "assets",
   description,
+  vite: {
+    plugins: [
+      {
+        name: "block-docs-editor-launch",
+        configureServer(server) {
+          // Docs do not need Vite's editor endpoint, which can expose Windows credentials.
+          const routes = new Set([
+            "/__open-in-editor",
+            `${server.config.base}__open-in-editor`,
+          ]);
+          for (const route of routes) {
+            server.middlewares.use(route, (_request, response) => {
+              response.statusCode = 404;
+              response.end();
+            });
+          }
+        },
+      },
+    ],
+  },
   themeConfig: {
     appicon: "/images/appicon.png",
     thumbnails: [
