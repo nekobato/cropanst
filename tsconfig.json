@@ -3,6 +3,9 @@
     "target": "ESNext",
     "module": "ESNext",
     "moduleResolution": "bundler",
+    "paths": {
+      "@/*": ["./src/renderer/src/*"]
+    },
     "allowImportingTsExtensions": true,
     "noEmit": true,
     "importHelpers": true,
