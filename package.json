@@ -31,7 +31,7 @@
     "@prettier/plugin-xml": "3.4.2",
     "@vitejs/plugin-vue": "6.0.10",
     "dmg-builder": "26.17.0",
-    "electron": "44.9.0",
+    "electron": "44.9.1",
     "electron-builder": "26.17.0",
     "electron-builder-squirrel-windows": "26.17.0",
     "electron-icon-builder": "2.0.1",
