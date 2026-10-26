@@ -1,8 +1,8 @@
 overrides:
-  dmg-builder: 26.15.3
-  electron-builder-squirrel-windows: 26.15.3
-  'request>form-data': 2.5.6
-  'vite>esbuild': 0.28.1
+  dmg-builder: 26.17.0
+  electron-builder-squirrel-windows: 26.17.0
+  "request>form-data": 2.5.6
+  "vite>esbuild": 0.28.1
 
   "source-map-js@>=1.0.0 <1.2.2": "1.2.2"
 allowBuilds:
