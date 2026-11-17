@@ -18,20 +18,11 @@ https://github.com/user-attachments/assets/77d34727-377d-4f64-8ade-0fff7ba935d2
 共有用ウィンドウの上にマウスポインタが乗った場合、マウスポインタ自身の表示も画面共有に含まれます。
 そのため、共有用ウィンドウは邪魔にならない隅っこに配置しておくことをおすすめします。
 
-## インストール
+## ダウンロード
 
-[最新リリース](https://github.com/nekobato/cropanst/releases/latest)から、お使いの環境に合うファイルをダウンロードしてください。v0.0.7 の配布ファイルは次のとおりです。
-
-| 環境 | ダウンロード |
-| --- | --- |
-| macOS / Apple Silicon | [Crop-and-Stream-0.0.7-arm64.dmg](https://github.com/nekobato/cropanst/releases/download/v0.0.7/Crop-and-Stream-0.0.7-arm64.dmg) |
-| macOS / Intel | [Crop-and-Stream-0.0.7.dmg](https://github.com/nekobato/cropanst/releases/download/v0.0.7/Crop-and-Stream-0.0.7.dmg) |
-| Windows / x64 | [Crop-and-Stream-Setup-0.0.7.exe](https://github.com/nekobato/cropanst/releases/download/v0.0.7/Crop-and-Stream-Setup-0.0.7.exe) |
-
-macOS は DMG を開いてアプリをインストールし、Windows は EXE を実行してインストーラーの案内に従ってください。
-`.blockmap` や `latest*.yml` は更新用のファイルで、手動インストールには不要です。
-
-Windows 版のインストーラーも配布していますが、この README で動作確認環境として記載しているのは下記の macOS のみです。Windows の動作確認済み環境を示すものではありません。
+- [Download macOS / Apple Silicon DMG](https://github.com/nekobato/cropanst/releases/download/v0.0.7/Crop-and-Stream-0.0.7-arm64.dmg)
+- [Download macOS / Intel DMG](https://github.com/nekobato/cropanst/releases/download/v0.0.7/Crop-and-Stream-0.0.7.dmg)
+- [Download Windows / x64 EXE](https://github.com/nekobato/cropanst/releases/download/v0.0.7/Crop-and-Stream-Setup-0.0.7.exe)
 
 ## 動作確認環境
 
